@@ -1,6 +1,5 @@
 package proyectoFinal.SuperSteveBros.controllers;
 
-
 import javafx.animation.AnimationTimer;
 import javafx.scene.image.ImageView;
 import proyectoFinal.SuperSteveBros.Imputs.KeyBoardListener;

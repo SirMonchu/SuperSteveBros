@@ -2,26 +2,35 @@ package proyectoFinal.SuperSteveBros.View;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-
 import javax.imageio.ImageIO;
-
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
 import javafx.scene.layout.Pane;
+import proyectoFinal.SuperSteveBros.Imputs.KeyBoardListener;
 
 public class GamePanel extends Pane {
     private static final double W = 1920, H = 1080;
     private BufferedImage img;
-    private final ImageView hero;
+    private ImageView hero;
     private BufferedImage[] moveAni;
+    private KeyBoardListener keyBoardListener;
 
     public GamePanel() {
     	inport();
-    	this.hero = convertToFxImage(imegeCrop(img));
+    	loadAnimations();
+//    	this.hero = convertToFxImage(imegeCrop(img));
+    	int i = 0;
+    	do {
+    		this.hero = convertToFxImage(moveAni[i]);
+    		i++;
+		} while (keyBoardListener.isGoEast());
+//    	this.hero = convertToFxImage(moveAni[0]);
         getChildren().add(hero);
     }
     
@@ -41,12 +50,19 @@ public class GamePanel extends Pane {
     }
     
     private BufferedImage imegeCrop(BufferedImage image) {
-    	BufferedImage img = image.getSubimage(0, 0, 56, 20);
+    	BufferedImage img = image.getSubimage(0, 0, 120, 120);
 		return img;
     }
     
     private void inport() {
-    	InputStream is = getClass().getResourceAsStream("C:\\\\Users\\\\ramon\\\\eclipse-workspace\\\\SuperSteveBros\\\\src\\\\main\\\\resources\\\\proyectoFinal\\\\SuperSteveBros\\\\Stevemvm.png");
+    	File file = new File("C:\\Users\\ramon\\eclipse-workspace\\SuperSteveBros\\src\\main\\resources\\proyectoFinal\\SuperSteveBros\\Stevemvm.png"); 
+    	InputStream is = null;
+		try {
+			is = new FileInputStream(file);
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     	try {
 			this.img = ImageIO.read(is);
 		} catch (IOException e) {
@@ -61,14 +77,14 @@ public class GamePanel extends Pane {
     	ImageView imageView = new ImageView(image);
 		return imageView;
     }
- /**  
+  
     private void loadAnimations() {
-    	moveAni = new BufferedImage[5];
+    	moveAni = new BufferedImage[7];
     	for (int i = 0; i < moveAni.length; i++) {
-    		moveAni[i] = ;
+    		moveAni[i] = img.getSubimage(i*112, 0, 112, 139);
     	}
     }
-**/
+
     public void dibujar() {
         moveHeroTo(W / 2, H / 2);
         setPrefSize(W, H);

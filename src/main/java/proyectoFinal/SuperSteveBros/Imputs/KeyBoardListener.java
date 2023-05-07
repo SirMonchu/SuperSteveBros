@@ -1,4 +1,5 @@
 package proyectoFinal.SuperSteveBros.Imputs;
+
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyEvent;
@@ -9,6 +10,7 @@ public class KeyBoardListener {
     private static final double W = 1920, H = 1080;
     private final Scene scene;
     private boolean running, goNorth, goSouth, goEast, goWest;
+    private KeyBoardListener keyBoardListener;
 
     public KeyBoardListener(GamePanel gamePanel) {
         scene = new Scene(gamePanel, W, H, Color.CYAN);
@@ -82,5 +84,10 @@ public class KeyBoardListener {
 
     public boolean isGoWest() {
         return goWest;
+    }
+    
+    public KeyBoardListener getKeyBoardListener() {
+    	
+    	return keyBoardListener;
     }
 }
