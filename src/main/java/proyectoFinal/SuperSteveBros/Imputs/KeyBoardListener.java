@@ -8,10 +8,14 @@ import proyectoFinal.SuperSteveBros.View.GamePanel;
 
 public class KeyBoardListener {
     private static final double W = 1920, H = 1080;
-    private final Scene scene;
+    private Scene scene;
     private boolean running, goNorth, goSouth, goEast, goWest;
     private KeyBoardListener keyBoardListener;
-
+    
+    public KeyBoardListener() {
+    	
+    }
+    
     public KeyBoardListener(GamePanel gamePanel) {
         scene = new Scene(gamePanel, W, H, Color.CYAN);
 
