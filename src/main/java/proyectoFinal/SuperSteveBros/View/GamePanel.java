@@ -6,9 +6,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-
 import javax.imageio.ImageIO;
-
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -18,6 +16,8 @@ import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
 import javafx.scene.layout.Pane;
 import javafx.util.Duration;
+import static proyectoFinal.SuperSteveBros.utils.Contants.PlayerConstants.*;
+import static proyectoFinal.SuperSteveBros.utils.Contants.Directions.*;
 
 public class GamePanel extends Pane {
     private static final double W = 1920, H = 1080;
@@ -25,31 +25,88 @@ public class GamePanel extends Pane {
     private ImageView hero;
     private BufferedImage[] [] animations;
     private int aniTick, aniIndex, aniSpeed = 5;
-    
+    private int playerAction;
+    private int playerDir = -1;
+    private boolean moving = false;
+    private boolean moving_right = false;
+    private boolean moving_left = false;
 
     public GamePanel() {
         inport();
         loadAnimations();
-        this.hero = convertToFxImage(animations[1][aniIndex]);
+        this.hero = convertToFxImage(animations[playerAction][aniIndex]);
 //        this.hero = convertToFxImage(animations [1][5]);
         getChildren().add(hero);
 
         // Crear una animación para actualizar la imagen del héroe
         Timeline timeline = new Timeline(new KeyFrame(Duration.millis(1000/60), e -> {
             updateAniTick();
-            hero.setImage(convertToFxImage(animations[1][aniIndex]).getImage());
+            setAnimation();
+            hero.setImage(convertToFxImage(animations[playerAction][aniIndex]).getImage());
         }));
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();
         
     }
+    
+    private void setAnimation() {
+    	
+    	if (moving_right) {
+    		playerAction = RUNNING_RIGHT;
+    	} else {
+    		playerAction = RUNNING_LEFT;
+    	}
+    	
+    }
+    
+    public void setDirection(int direction) {
+        this.playerDir = direction;
+        moving = true;
+        if (playerDir == RIGHT) {
+            moving_right = true;
+            moving_left = false;
+        } else if (playerDir == LEFT) {
+            moving_left = true;
+            moving_right = false;
+        }
+        if (moving_right) {
+            playerAction = RUNNING_RIGHT;
+        } else if (moving_left) {
+            playerAction = RUNNING_LEFT;
+        } else {
+  //          playerAction = IDLE;
+        }
+    }
+    
+    public void setMoving(boolean moving) {
+        this.moving = moving;
+        moving_right = false;
+        moving_left = false;
+        if (moving && playerDir == RIGHT) {
+            moving_right = true;
+            playerAction = RUNNING_RIGHT;
+        } else if (moving && playerDir == LEFT) {
+            moving_left = true;
+            playerAction = RUNNING_LEFT;
+        } else if (!moving) {
+      //      playerAction = IDLE;
+        }
+    }
+    
+	public void Setmoving_left(boolean moving_left) {
+		this.moving_left = moving_left;	
+	}
+
+	public void Setmoving_right(boolean moving_right) {
+		this.moving_right = moving_right;
+	}
 
     private void updateAniTick() {
         aniTick++;
         if (aniTick >= aniSpeed) {
             aniTick = 0;
             aniIndex++;
-            if (aniIndex >= 7) {
+            if (aniIndex >= GetSpriteAmount(playerAction)) {
                 aniIndex = 0;
             }
         }
@@ -139,4 +196,6 @@ public class GamePanel extends Pane {
     public ImageView getHero() {
         return hero;
     }
+
+
 }

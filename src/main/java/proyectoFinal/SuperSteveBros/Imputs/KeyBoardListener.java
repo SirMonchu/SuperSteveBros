@@ -5,6 +5,7 @@ import javafx.scene.Scene;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 import proyectoFinal.SuperSteveBros.View.GamePanel;
+import static proyectoFinal.SuperSteveBros.utils.Contants.Directions.*;
 
 public class KeyBoardListener {
     private static final double W = 1920, H = 1080;
@@ -31,9 +32,11 @@ public class KeyBoardListener {
                         break;
                     case A:
                         goWest = true;
+                        gamePanel.Setmoving_left(true);
                         break;
                     case D:
                         goEast = true;
+                        gamePanel.Setmoving_right(true);
                         break;
                     case SHIFT:
                         running = true;
@@ -48,15 +51,21 @@ public class KeyBoardListener {
                 switch (event.getCode()) {
                     case W:
                         goNorth = false;
+                        gamePanel.setMoving(false);
                         break;
                     case S:
                         goSouth = false;
+                        gamePanel.setMoving(false);
                         break;
                     case A:
                         goWest = false;
+                        gamePanel.Setmoving_left(false);
+                        gamePanel.setMoving(false);
                         break;
                     case D:
                         goEast = false;
+                        gamePanel.Setmoving_right(false);
+                        gamePanel.setMoving(false);
                         break;
                     case SHIFT:
                         running = false;
