@@ -1,7 +1,8 @@
 package proyectoFinal.SuperSteveBros;
 
 import proyectoFinal.SuperSteveBros.View.GamePanel;
-import javafx.animation.AnimationTimer;
+import proyectoFinal.SuperSteveBros.entities.Player;
+import javafx.scene.canvas.Canvas;
 import proyectoFinal.SuperSteveBros.Imputs.KeyBoardInputs;
 
 public class Game implements Runnable {
@@ -12,13 +13,21 @@ public class Game implements Runnable {
 	private final int FPS_SET = 120;
 	private final int UPS_SET = 200;
 	
+	private Player player;
+	
 	public Game() {
-		gamePanel = new GamePanel();
+		initClasses();
+		gamePanel = new GamePanel(this);
 		gamePanel.requestFocus();
 		keyBoardInputs = new KeyBoardInputs(gamePanel);
 		startGameLoop();
 	}
 	
+	private void initClasses() {
+		player = new Player(200, 200);
+		
+	}
+
 	private void startGameLoop() {
 		gameThread = new Thread(this);
 		gameThread.start();
@@ -33,7 +42,11 @@ public class Game implements Runnable {
 	}
 	
 	public void update() {
-		gamePanel.updateGame();
+		player.update();
+	}
+	
+	public void render(Canvas canvas) {
+		player.render(canvas);
 	}
 
 	@Override
@@ -76,5 +89,13 @@ public class Game implements Runnable {
         	}
 		
 		}
+	}
+	
+	public Player getPlayer() {
+		return player;
+	}
+
+	public void windowFocusLost() {
+		player.resetDirBooleans();
 	}
 }

@@ -17,6 +17,13 @@ public class MainClass extends Application{
 		stage.setScene(game.getGamePanel().getScene());
 		stage.setResizable(false); // asegurar que la ventana no sea redimensionable
 		stage.show();
+
+        stage.focusedProperty().addListener((obs, wasFocused, isNowFocused) -> {
+            if (!isNowFocused) {
+                game.windowFocusLost();
+            }
+        });
+		
 	    stage.setOnCloseRequest(event -> {
 	        game.stopGameLoop();
 	    });

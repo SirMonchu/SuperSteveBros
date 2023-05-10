@@ -17,24 +17,23 @@ public class KeyBoardInputs {
             @Override
             public void handle(KeyEvent event) {
                 switch (event.getCode()) {
-                    case W:
-                        gamePanel.setDirection(UP);
-                        break;
-                    case S:
-                    	gamePanel.setDirection(DOWN);
-                    	
-                        break;
-                    case A:
-                    	gamePanel.setDirection(LEFT);
-                        break;
-                    case D:
-                    	gamePanel.setDirection(RIGHT);
-                        break;
+                case W:
+                	gamePanel.getGame().getPlayer().setUp(true);
+                	break;
+                case S:
+                	gamePanel.getGame().getPlayer().setDown(true);
+                	break;
+                case A:
+                	gamePanel.getGame().getPlayer().setLeft(true);
+                	break;
+                case D:
+                	gamePanel.getGame().getPlayer().setRight(true);
+                	break;
                     case CONTROL:
-                    	gamePanel.setSneaking(true);
+                    	gamePanel.getGame().getPlayer().setSneaking(true);
                     	break;
                     case SHIFT:
-                        gamePanel.setRunning(true);
+                        gamePanel.getGame().getPlayer().setRunning(true);
                         break;
                 }
             }
@@ -45,16 +44,22 @@ public class KeyBoardInputs {
             public void handle(KeyEvent event) {
                 switch (event.getCode()) {
                     case W:
+                    	gamePanel.getGame().getPlayer().setUp(false);
+                    	break;
                     case S:
+                    	gamePanel.getGame().getPlayer().setDown(false);
+                    	break;
                     case A:
+                    	gamePanel.getGame().getPlayer().setLeft(false);
+                    	break;
                     case D:
-                    	gamePanel.setMoving(false);
+                    	gamePanel.getGame().getPlayer().setRight(false);
                     	break;
                     case CONTROL:
-                    	gamePanel.setSneaking(false);
+                    	gamePanel.getGame().getPlayer().setSneaking(false);
                     	break;
                     case SHIFT:
-                    	gamePanel.setRunning(false);
+                    	gamePanel.getGame().getPlayer().setRunning(false);
                         break;
                 }
             }
