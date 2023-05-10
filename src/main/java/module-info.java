@@ -5,4 +5,5 @@ module proyectoFinal.SuperSteveBros {
 
     opens proyectoFinal.SuperSteveBros to javafx.fxml;
     exports proyectoFinal.SuperSteveBros;
+
 }
