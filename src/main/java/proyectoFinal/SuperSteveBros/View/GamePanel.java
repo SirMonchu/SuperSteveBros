@@ -33,7 +33,7 @@ public class GamePanel extends Pane {
     private int playerDir = -1;
     private boolean moving = false;
     private boolean running = false;
-    private double speed = 5;
+    private double speed = 3;
     private boolean sneaking = false;
 
 
@@ -100,27 +100,30 @@ public class GamePanel extends Pane {
         	}
             switch (playerDir) {
                 case LEFT:
-                    cx -= 5 * speed;
+                    cx -= 3 * speed;
                     break;
                 case UP:
-                    cy -= 5 * speed;
+                    cy -= 3 * speed;
                     break;
                 case RIGHT:
-                    cx += 5 * speed;
+                    cx += 3 * speed;
                     break;
                 case DOWN:
-                    cy += 5 * speed;
+                    cy += 3 * speed;
                     break;
             }
         }
+    }
+    
+    public void updateGame() {
+        updateAniTick();
+        setAnimation();
+        updatePos();
     }
 
 
     public void refresh() {
     	canvas.getGraphicsContext2D().clearRect(0, 0, W, H);
-        updateAniTick();
-        setAnimation();
-        updatePos();
         canvas.getGraphicsContext2D().drawImage(animations[playerAction][aniIndex], cx, cy, img.getWidth() / 15, img.getHeight() / 11);
 	}
 
