@@ -1,9 +1,6 @@
 package proyectoFinal.SuperSteveBros.entities;
 
-import static proyectoFinal.SuperSteveBros.utilz.Constants.Directions.DOWN;
-import static proyectoFinal.SuperSteveBros.utilz.Constants.Directions.LEFT;
-import static proyectoFinal.SuperSteveBros.utilz.Constants.Directions.RIGHT;
-import static proyectoFinal.SuperSteveBros.utilz.Constants.Directions.UP;
+import static proyectoFinal.SuperSteveBros.utilz.HelpMethods.*;
 import static proyectoFinal.SuperSteveBros.utilz.Constants.PlayerConstants.GetSpriteAmount;
 import static proyectoFinal.SuperSteveBros.utilz.Constants.PlayerConstants.IDLE;
 import static proyectoFinal.SuperSteveBros.utilz.Constants.PlayerConstants.RUNNING_LEFT;
@@ -14,19 +11,13 @@ import static proyectoFinal.SuperSteveBros.utilz.Constants.PlayerConstants.WALKI
 import static proyectoFinal.SuperSteveBros.utilz.Constants.PlayerConstants.WALKING_RIGHT;
 
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
 
-import javax.imageio.ImageIO;
-
-import javafx.scene.canvas.Canvas;
+import javafx.application.Platform;
 import javafx.scene.image.Image;
+import proyectoFinal.SuperSteveBros.Game;
+import proyectoFinal.SuperSteveBros.View.GamePanel;
+import proyectoFinal.SuperSteveBros.utilz.LoadSave;
 import javafx.scene.image.ImageView;
-import javafx.scene.image.PixelWriter;
-import javafx.scene.image.WritableImage;
 
 public class Player extends Entity {
 
@@ -35,95 +26,130 @@ public class Player extends Entity {
     private int playerAction = IDLE;
     private boolean moving = false;
     private boolean running = false;
-    private double speed = 3;
+    private float speed = 3;
     private boolean sneaking = false;
     private BufferedImage img;
-    private boolean left, up, right, down;
-	
-	public Player(float x, float y) {
-		super(x, y);
+    private boolean left, up, right, down, jump;
+    public static int [][] lvlData;
+    private float xDrawOffset = 18 * Game.SCALE;
+    private float yDrawOffset = 5 * Game.SCALE;
+    private ImageView imageView;
+    
+    //JUMPING // GRAVITY
+    
+    private float airSpeed = 0f;
+    private float gravity = 0.04f * Game.SCALE;
+    private float JumpSpeed = -2.25f * Game.SCALE;
+    private float fallSpeedAfterCollision = 0.5f * Game.SCALE;
+    private boolean inAir = false;
+    
+	public Player(float x, float y, int width, int height) {
+		super(x, y, width, height);
+		imageView = new ImageView();
+		imageView.setFitWidth(width);
+		imageView.setFitHeight(height * 1.6);
 		loadAnimations();
+		iniHitbox(x, y, 29 * Game.SCALE, 56 * Game.SCALE);
 	}
 	
 	public void update() {
+		updatePos();
         updateAniTick();
-        setAnimation();
-        updatePos();
+        setAnimation();     
 	}
 	
-	public void render(Canvas canvas) {
-    	canvas.getGraphicsContext2D().clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
-        canvas.getGraphicsContext2D().drawImage(animations[playerAction][aniIndex], x, y, img.getWidth() / 15, img.getHeight() / 11);
+	public void render(GamePanel gamePanel) {
+		Platform.runLater(() -> {
+		    imageView.setImage(animations[playerAction][aniIndex]);
+		    imageView.setX((int) (hitBox.x - xDrawOffset));
+		    imageView.setY((int) (hitBox.y - yDrawOffset));
+		    gamePanel.getChildren().remove(imageView);
+		    gamePanel.getChildren().add(imageView);
+		    drawHitbox(gamePanel);
+		});
 	}
 	
     private void loadAnimations() {
+
+    	 img = LoadSave.GetSpriteAtlas(LoadSave.PLAYER_ATLAS);
     	
-        File file = new File("src/main/resources/proyectoFinal/SuperSteveBros/SteveAnimated.png");
-        InputStream is = null;
-        try {
-            is = new FileInputStream(file);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        try {
-        	img = ImageIO.read(is);
-            
             animations = new Image[8][11];
             for (int j = 0; j < animations.length; j++) {
                 for (int i = 0; i < animations[j].length; i++) {
                     BufferedImage subimage = img.getSubimage(i*181, j*200, 181, 200);
-                    animations[j][i] = convertToFxImage(subimage);
+                    animations[j][i] = LoadSave.convertToFxImage(subimage);
                 }
             }
-            is.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
-    	private static Image convertToFxImage(BufferedImage image) {
-            WritableImage wr = null;
-            if (image != null) {
-                wr = new WritableImage(image.getWidth(), image.getHeight());
-                PixelWriter pw = wr.getPixelWriter();
-                for (int x = 0; x < image.getWidth(); x++) {
-                    for (int y = 0; y < image.getHeight(); y++) {
-                        pw.setArgb(x, y, image.getRGB(x, y));
-                    }
-                }
-            }
-
-            return new ImageView(wr).getImage();
-        }
+    
+    public void loadLvlData(int [][] lvlData) {
+    	this.lvlData = lvlData;
+    	if (!IsEntityOnFloor(hitBox, lvlData)) {
+    		inAir = true;
+    	}
+    }
     	
-        private void updatePos() {
-        	
-        	moving = false;
-        	
-            	if (running) {
-            		speed = 2;
-            	} else if (sneaking) {
-            		speed = 0.5;
-            	} else {
-            		speed = 1;
-            	}
-            	if (left && !right) {
-            		x -= 3 * speed;
-            		moving = true;
-            	} else if (right && !left) {
-            		x += 3 * speed;
-            		moving = true;
-            	}
-            	if (up && !down) {
-            		y -= 3 * speed;
-            		moving = true;
-            	} else if (down && !up) {
-            		y += 3 * speed;
-            		moving = true;
-            	}
-            }
-        
-        
-        private void updateAniTick() {
+    private void updatePos() {
+		moving = false;
+
+		if (jump)
+			jump();
+		if (!left && !right && !inAir)
+			return;
+
+		float xSpeed = 0;
+
+		if (left)
+			xSpeed -= speed;
+		if (right)
+			xSpeed += speed;
+
+		if (!inAir)
+			if (!IsEntityOnFloor(hitBox, lvlData))
+				inAir = true;
+
+		if (inAir) {
+			if (CanMoveHere(hitBox.x, hitBox.y + airSpeed, hitBox.width, hitBox.height, lvlData)) {
+				hitBox.y += airSpeed;
+				airSpeed += gravity;
+				updateXPos(xSpeed);
+			} else {
+				hitBox.y = GetEntityYPosUnderRoofOrAboveFloor(hitBox, airSpeed);
+				if (airSpeed > 0)
+					resetInAir();
+				else
+					airSpeed = fallSpeedAfterCollision;
+				updateXPos(xSpeed);
+			}
+
+		} else
+			updateXPos(xSpeed);
+		moving = true;
+	}
+
+	private void jump() {
+		if (inAir)
+			return;
+		inAir = true;
+		airSpeed = JumpSpeed;
+
+	}
+
+	private void resetInAir() {
+		inAir = false;
+		airSpeed = 0;
+
+	}
+
+	private void updateXPos(float xSpeed) {
+		if (CanMoveHere(hitBox.x + xSpeed, hitBox.y, hitBox.width, hitBox.height, lvlData)) {
+			hitBox.x += xSpeed;
+		} else {
+			hitBox.x = GetEntityXPosNextToWall(hitBox, xSpeed);
+		}
+	}
+
+		private void updateAniTick() {
             aniTick++;
             if (aniTick >= aniSpeed) {
                 aniTick = 0;
@@ -226,5 +252,7 @@ public class Player extends Entity {
 			sneaking = false;
 		}
         
-        
+       public void setJump(boolean jump) {
+    	   this.jump = jump;
+       }
 }

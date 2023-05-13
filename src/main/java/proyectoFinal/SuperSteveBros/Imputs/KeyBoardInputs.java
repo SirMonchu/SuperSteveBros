@@ -29,12 +29,15 @@ public class KeyBoardInputs {
                 case D:
                 	gamePanel.getGame().getPlayer().setRight(true);
                 	break;
-                    case CONTROL:
-                    	gamePanel.getGame().getPlayer().setSneaking(true);
-                    	break;
-                    case SHIFT:
-                        gamePanel.getGame().getPlayer().setRunning(true);
-                        break;
+                case CONTROL:
+                	gamePanel.getGame().getPlayer().setSneaking(true);
+                   	break;
+                case SHIFT:
+                    gamePanel.getGame().getPlayer().setRunning(true);
+                    break;
+                case SPACE:
+                  	gamePanel.getGame().getPlayer().setJump(true);
+                  	break;
                 }
             }
         });
@@ -60,6 +63,9 @@ public class KeyBoardInputs {
                     	break;
                     case SHIFT:
                     	gamePanel.getGame().getPlayer().setRunning(false);
+                        break;
+                    case SPACE:
+                    	gamePanel.getGame().getPlayer().setJump(false);
                         break;
                 }
             }

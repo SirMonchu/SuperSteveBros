@@ -1,54 +1,60 @@
 package proyectoFinal.SuperSteveBros.View;
 
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import javax.imageio.ImageIO;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.image.Image;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.ImageView;
-import javafx.scene.image.PixelWriter;
-import javafx.scene.image.WritableImage;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import proyectoFinal.SuperSteveBros.Game;
 import proyectoFinal.SuperSteveBros.Imputs.KeyBoardInputs;
-import static proyectoFinal.SuperSteveBros.utilz.Constants.PlayerConstants.*;
-import static proyectoFinal.SuperSteveBros.utilz.Constants.Directions.*;
+
+import static proyectoFinal.SuperSteveBros.Game.GAME_HEIGHT;
+import static proyectoFinal.SuperSteveBros.Game.GAME_WIDTH;
 
 public class GamePanel extends Pane {
 
-    private static final double W = 1280, H = 800;
     private Canvas canvas;
     private KeyBoardInputs keyBoardInputs;
     private static Scene scene;
     private Game game;
+    GraphicsContext gc;
+
 
     public GamePanel(Game game) {
     	this.game = game;
-        canvas = new Canvas(W, H);
-        scene = new Scene(this, W, H, Color.CYAN);
-        this.getChildren().add(canvas);
+    	canvas = new Canvas(GAME_WIDTH, GAME_HEIGHT);
+        scene = new Scene(GamePanel.this, GAME_WIDTH, GAME_HEIGHT, Color.CYAN);
         keyBoardInputs = new KeyBoardInputs(this); // pasar una referencia a esta instancia de GamePanel
         this.setFocusTraversable(true);
+        this.getChildren().add(canvas);
+        System.out.println("Size: " + GAME_WIDTH + " x " + GAME_HEIGHT);
     }
 
     
     public void updateGame() {
-
+    	
     }
 
 
     public void refresh() {
-    	game.render(this.canvas);
+    	game.render(this);
 	}
+    
+//    public void repaint() {
+//    	paintComponent(this.gc);
+//    }
+//    
+//    public void paintComponent(GraphicsContext gc) {
+//		game.render(gc);
+//	}
     
     public Game getGame() {
     	return game;
+    }
+    
+    public Canvas getCanvas() {
+    	return this.canvas;
     }
 }
 
