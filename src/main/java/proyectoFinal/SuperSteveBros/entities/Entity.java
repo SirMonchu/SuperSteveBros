@@ -2,9 +2,9 @@ package proyectoFinal.SuperSteveBros.entities;
 
 import java.awt.geom.Rectangle2D;
 
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import proyectoFinal.SuperSteveBros.View.GamePanel;
 
 public abstract class Entity {
 	
@@ -20,12 +20,12 @@ public abstract class Entity {
 		this.height = height;
 	}
 	
-	protected void drawHitbox(GamePanel gamePanel) {
+	protected void drawHitbox(Pane root) {
 //		gc.strokeRect(hitBox.x, hitBox.y, hitBox.width, hitBox.height);
 		fxRect.setX(hitBox.x);
 		fxRect.setY(hitBox.y);
-		gamePanel.getChildren().remove(fxRect);
-		gamePanel.getChildren().add(fxRect);
+		root.getChildren().remove(fxRect);
+		root.getChildren().add(fxRect);
 	}
 
 	protected void iniHitbox(float x, float y, float width, float height) {
@@ -46,3 +46,4 @@ public abstract class Entity {
 	}
 	
 }
+

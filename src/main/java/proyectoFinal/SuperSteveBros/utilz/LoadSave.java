@@ -19,6 +19,7 @@ public class LoadSave {
 	public static final String PLAYER_ATLAS = "SteveAnimated.png";
 	public static final String LEVEL_ATLAS = "outside_sprites.png";
 	public static final String LEVEL_DATA = "level_one_data.png";
+	public static final String MENU_BUTTONS = "button_atlas.png";
 	
 	public static BufferedImage GetSpriteAtlas(String fileName) {
 		BufferedImage img = null;
@@ -51,6 +52,21 @@ public class LoadSave {
         }
 
         return new ImageView(wr).getImage();
+    }
+	
+	public static ImageView convertToFxImageView(BufferedImage image) {
+        WritableImage wr = null;
+        if (image != null) {
+            wr = new WritableImage(image.getWidth(), image.getHeight());
+            PixelWriter pw = wr.getPixelWriter();
+            for (int x = 0; x < image.getWidth(); x++) {
+                for (int y = 0; y < image.getHeight(); y++) {
+                    pw.setArgb(x, y, image.getRGB(x, y));
+                }
+            }
+        }
+
+        return new ImageView(wr);
     }
 	
 	public static int[][] GetLevelData() {

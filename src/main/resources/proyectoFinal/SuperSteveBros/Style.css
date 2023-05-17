@@ -1,0 +1,8 @@
+@font-face {
+   font-family: Extrude;
+   src: url(Extrude.tff);
+}
+
+.text {
+   -fx-font-family: Extrude;
+}

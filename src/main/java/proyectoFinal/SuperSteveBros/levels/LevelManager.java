@@ -2,12 +2,9 @@ package proyectoFinal.SuperSteveBros.levels;
 
 import java.awt.image.BufferedImage;
 import javafx.scene.image.ImageView;
-import javafx.application.Platform;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.layout.Pane;
 import javafx.scene.image.Image;
 import proyectoFinal.SuperSteveBros.Game;
-import proyectoFinal.SuperSteveBros.View.GamePanel;
 import proyectoFinal.SuperSteveBros.utilz.LoadSave;
 
 public class LevelManager {
@@ -22,7 +19,6 @@ public class LevelManager {
 		this.game = game;
 		importOutsideSprites();
 		levelOne = new Level(LoadSave.GetLevelData());
-		imageView = new ImageView();
 	}
 	
 	private void importOutsideSprites() {
@@ -37,11 +33,18 @@ public class LevelManager {
 	    }
 	}
 
-	public void draw(GamePanel gamePanel) {
+	public void draw(Pane root) {
 		for (int j = 0; j < Game.TILES_IN_HEIGHT; j++) {
 			for (int i = 0; i < Game.TILES_IN_WIDTH; i++) {
 				 int index = levelOne.getSpriteIndex(i, j);
-				 gamePanel.getCanvas().getGraphicsContext2D().drawImage(image[index], Game.TILES_SIZE*i, Game.TILES_SIZE*j, Game.TILES_SIZE, Game.TILES_SIZE);
+//				 imageView.setImage();
+				 imageView = new ImageView(image[index]);
+				 imageView.setFitWidth(Game.TILES_SIZE);
+				 imageView.setFitHeight(Game.TILES_SIZE);
+				 imageView.setX(Game.TILES_SIZE*i);
+				 imageView.setY(Game.TILES_SIZE*j);
+				 root.getChildren().remove(imageView);
+				 root.getChildren().add(imageView);
 			}
 		}
 	}

@@ -1,6 +1,17 @@
 package proyectoFinal.SuperSteveBros.utilz;
 
+import proyectoFinal.SuperSteveBros.Game;
+
 public class Constants {
+	
+	public static class UI{
+		public static class Buttons {
+			public static final int BUTTONS_WIDTH_DEF = 140;
+			public static final int BUTTONS_HEIGHT_DEF = 56;
+			public static final int BUTTONS_WIDTH = (int) (BUTTONS_WIDTH_DEF * Game.SCALE);
+			public static final int BUTTONS_HEIGHT = (int) (BUTTONS_HEIGHT_DEF * Game.SCALE);
+		}
+	}
 	
 	public static class Directions {
 		

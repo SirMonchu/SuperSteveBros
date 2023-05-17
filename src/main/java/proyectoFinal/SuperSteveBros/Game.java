@@ -1,10 +1,11 @@
 package proyectoFinal.SuperSteveBros;
 
 import proyectoFinal.SuperSteveBros.View.GamePanel;
-import proyectoFinal.SuperSteveBros.entities.Player;
-import proyectoFinal.SuperSteveBros.levels.LevelManager;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
+import proyectoFinal.SuperSteveBros.gameStates.Gamestate;
+import proyectoFinal.SuperSteveBros.gameStates.Menu;
+import proyectoFinal.SuperSteveBros.gameStates.Playing;
+import javafx.application.Platform;
+import javafx.scene.layout.Pane;
 import proyectoFinal.SuperSteveBros.Imputs.KeyBoardInputs;
 
 public class Game implements Runnable {
@@ -14,8 +15,9 @@ public class Game implements Runnable {
 	private Thread gameThread;
 	private final int FPS_SET = 120;
 	private final int UPS_SET = 200;
-	private Player player;
-	private LevelManager levelManager;
+
+	private Playing playing;
+	private Menu menu;
 	
 	public final static int TILES_DEFAULT_SIZE = 32;
 	public final static float SCALE = 2f;
@@ -29,14 +31,12 @@ public class Game implements Runnable {
 		initClasses();
 		gamePanel = new GamePanel(this);
 		gamePanel.requestFocus();
-		keyBoardInputs = new KeyBoardInputs(gamePanel);
 		startGameLoop();
 	}
 	
 	private void initClasses() {
-		levelManager = new LevelManager(this);
-		player = new Player(200, 200, (int) (64 * SCALE), (int) (40 * SCALE));
-		player.loadLvlData(levelManager.getLevel().getLvlData());
+		menu = new Menu(this);
+		playing = new Playing(this);
 	}
 
 	private void startGameLoop() {
@@ -53,13 +53,32 @@ public class Game implements Runnable {
 	}
 	
 	public void update() {
-		levelManager.update();
-		player.update();
+		switch (Gamestate.state) {
+		case MENU:
+			menu.update();
+			break;
+		case PLAYING:
+			playing.update();
+			break;
+		case OPTIONS:
+		case QUIT:
+		default:
+			System.exit(0);
+			break;
+		}
 	}
 	
-	public void render(GamePanel gamePanel) {
-		levelManager.draw(gamePanel);
-		player.render(gamePanel);
+	public void render(Pane root) {
+		switch (Gamestate.state) {
+		case MENU:
+			menu.draw(root);
+			break;
+		case PLAYING:
+			playing.draw(root);
+			break;
+		default:
+			break;
+		}
 	}
 
 	@Override
@@ -89,7 +108,7 @@ public class Game implements Runnable {
 			}
 			
 			if (deltaF >= 1) {
-				gamePanel.refresh();
+				Platform.runLater(() -> gamePanel.refresh());
 				frames++;
 				deltaF--;
 			}
@@ -104,11 +123,17 @@ public class Game implements Runnable {
 		}
 	}
 	
-	public Player getPlayer() {
-		return player;
-	}
-
 	public void windowFocusLost() {
-		player.resetDirBooleans();
+		if (Gamestate.state == Gamestate.PLAYING) {
+			playing.getPlayer().resetDirBooleans();
+		}
+	}
+	
+	public Menu getMenu() {
+		return menu;
+	}
+	
+	public Playing getPlaying() {
+		return playing;
 	}
 }

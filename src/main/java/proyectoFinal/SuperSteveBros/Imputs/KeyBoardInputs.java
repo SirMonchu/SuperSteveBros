@@ -1,73 +1,51 @@
 package proyectoFinal.SuperSteveBros.Imputs;
 
+import javafx.scene.Scene;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 import proyectoFinal.SuperSteveBros.View.GamePanel;
+import proyectoFinal.SuperSteveBros.gameStates.Gamestate;
 import javafx.event.EventHandler;
 import static proyectoFinal.SuperSteveBros.utilz.Constants.Directions.*;
 
 public class KeyBoardInputs {
 	
+	private Scene scene;
 	private GamePanel gamePanel;
 	
-    public KeyBoardInputs(GamePanel gamePanel) {
+    public KeyBoardInputs(Scene scene , GamePanel gamePanel) {
+        this.scene = scene;
         this.gamePanel = gamePanel;
-
-    	gamePanel.getScene().setOnKeyPressed(new EventHandler<KeyEvent>() {
+        
+        scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent event) {
-                switch (event.getCode()) {
-                case W:
-                	gamePanel.getGame().getPlayer().setUp(true);
-                	break;
-                case S:
-                	gamePanel.getGame().getPlayer().setDown(true);
-                	break;
-                case A:
-                	gamePanel.getGame().getPlayer().setLeft(true);
-                	break;
-                case D:
-                	gamePanel.getGame().getPlayer().setRight(true);
-                	break;
-                case CONTROL:
-                	gamePanel.getGame().getPlayer().setSneaking(true);
-                   	break;
-                case SHIFT:
-                    gamePanel.getGame().getPlayer().setRunning(true);
-                    break;
-                case SPACE:
-                  	gamePanel.getGame().getPlayer().setJump(true);
-                  	break;
-                }
+            	switch (Gamestate.state) {
+				case MENU:
+					gamePanel.getGame().getMenu().keyPressed(event);
+					break;
+				case PLAYING:
+					gamePanel.getGame().getPlaying().keyPressed(event);
+					break;
+				default:
+					break;
+				}
             }
         });
 
-    	gamePanel.getScene().setOnKeyReleased(new EventHandler<KeyEvent>() {
+        scene.setOnKeyReleased(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent event) {
-                switch (event.getCode()) {
-                    case W:
-                    	gamePanel.getGame().getPlayer().setUp(false);
-                    	break;
-                    case S:
-                    	gamePanel.getGame().getPlayer().setDown(false);
-                    	break;
-                    case A:
-                    	gamePanel.getGame().getPlayer().setLeft(false);
-                    	break;
-                    case D:
-                    	gamePanel.getGame().getPlayer().setRight(false);
-                    	break;
-                    case CONTROL:
-                    	gamePanel.getGame().getPlayer().setSneaking(false);
-                    	break;
-                    case SHIFT:
-                    	gamePanel.getGame().getPlayer().setRunning(false);
-                        break;
-                    case SPACE:
-                    	gamePanel.getGame().getPlayer().setJump(false);
-                        break;
-                }
+            	switch (Gamestate.state) {
+				case MENU:
+					gamePanel.getGame().getMenu().keyReleased(event);
+					break;
+				case PLAYING:
+					gamePanel.getGame().getPlaying().keyReleased(event);
+					break;
+				default:
+					break;
+				}
             }
         });
     }
