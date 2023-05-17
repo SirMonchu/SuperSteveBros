@@ -6,6 +6,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import proyectoFinal.SuperSteveBros.Game;
+import proyectoFinal.SuperSteveBros.Ui.PauseOverlay;
 import proyectoFinal.SuperSteveBros.View.GamePanel;
 import proyectoFinal.SuperSteveBros.entities.Player;
 import proyectoFinal.SuperSteveBros.levels.LevelManager;
@@ -15,6 +16,8 @@ public class Playing extends State implements StateMethods{
 	private Player player;
 	private LevelManager levelManager;
 	private Scene scene;
+	private boolean paused = true;
+	private PauseOverlay pauseOverlay;
 	
 	public Playing(Game game) {
 		super(game);
@@ -26,18 +29,21 @@ public class Playing extends State implements StateMethods{
 		levelManager = new LevelManager(game);
 		player = new Player(200, 200, (int) (36 * Game.SCALE), (int) (36 * Game.SCALE));
 		player.loadLvlData(levelManager.getLevel().getLvlData());
+		pauseOverlay = new PauseOverlay();
 	}
 
 	@Override
 	public void update() {
 		levelManager.update();
 		player.update();
+		pauseOverlay.update();
 	}
 
 	@Override
 	public void draw(Pane root) {
 		levelManager.draw(root);
 		player.render(root);
+		pauseOverlay.draw(root);
 	}
 
 	@Override
@@ -61,7 +67,7 @@ public class Playing extends State implements StateMethods{
                 case SPACE:
                 	player.setJump(true);
                   	break;
-                case E:
+                case ESCAPE:
                 	Gamestate.state = Gamestate.MENU;
                 	break;
                 }
@@ -105,19 +111,24 @@ public class Playing extends State implements StateMethods{
 
 	@Override
 	public void mousePressed(MouseEvent event) {
-		// TODO Auto-generated method stub
-		
+		if (paused) {
+			pauseOverlay.mousePressed(event);
+		}
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent event) {
-		// TODO Auto-generated method stub
+		if (paused) {
+			pauseOverlay.mouseReleased(event);
+		}
 		
 	}
 
 	@Override
 	public void mouseMoved(MouseEvent event) {
-		// TODO Auto-generated method stub
+		if (paused) {
+			pauseOverlay.mouseMoved(event);
+		}
 		
 	}
 }

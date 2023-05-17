@@ -127,6 +127,14 @@ public class MouseInputs {
 				}
             }
         });
+        
+        gamePanel.setOnMouseDragged(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				
+				
+			}
+        });
     }
 }
 

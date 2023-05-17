@@ -37,7 +37,6 @@ public class LevelManager {
 		for (int j = 0; j < Game.TILES_IN_HEIGHT; j++) {
 			for (int i = 0; i < Game.TILES_IN_WIDTH; i++) {
 				 int index = levelOne.getSpriteIndex(i, j);
-//				 imageView.setImage();
 				 imageView = new ImageView(image[index]);
 				 imageView.setFitWidth(Game.TILES_SIZE);
 				 imageView.setFitHeight(Game.TILES_SIZE);

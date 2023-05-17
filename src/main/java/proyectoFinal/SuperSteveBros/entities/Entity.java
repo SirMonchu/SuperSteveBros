@@ -28,7 +28,7 @@ public abstract class Entity {
 		root.getChildren().add(fxRect);
 	}
 
-	protected void iniHitbox(float x, float y, float width, float height) {
+	protected void iniHitbox(float x, float y, int width, int height) {
 		hitBox = new Rectangle2D.Float(x, y, width, height); 
 		fxRect = new Rectangle((int) hitBox.x, (int) hitBox.y, (int) hitBox.width, (int) hitBox.height);
 		fxRect.setFill(Color.TRANSPARENT);
