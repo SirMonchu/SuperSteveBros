@@ -1,6 +1,6 @@
 package proyectoFinal.SuperSteveBros.Ui;
 
-import javafx.scene.shape.Rectangle;
+import java.awt.Rectangle;
 
 public class PauseButton {
 	

@@ -5,13 +5,10 @@ import static proyectoFinal.SuperSteveBros.utilz.Constants.UI.PauseButtons.*;
 import java.awt.image.BufferedImage;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
-import proyectoFinal.SuperSteveBros.gameStates.StateMethods;
 import proyectoFinal.SuperSteveBros.utilz.LoadSave;
 
-public class SoundButton extends PauseButton implements StateMethods{
+public class SoundButton extends PauseButton {
 	
 	private BufferedImage[][] soundImgs;
 	private Image[][] img;
@@ -38,7 +35,7 @@ public class SoundButton extends PauseButton implements StateMethods{
 	    }
 	}
 
-	@Override
+
 	public void update() {
 		if (muted) {
 			rowIndex = 1;
@@ -60,7 +57,7 @@ public class SoundButton extends PauseButton implements StateMethods{
 		mousePressed = false;
 	}
 
-	@Override
+
 	public void draw(Pane root) {
     	imageView.setImage(img[rowIndex][colIndex]);
     	imageView.setX(xPos);
@@ -69,36 +66,6 @@ public class SoundButton extends PauseButton implements StateMethods{
     	imageView.setFitHeight(height);
         root.getChildren().remove(imageView);
         root.getChildren().add(imageView);
-	}
-
-	@Override
-	public void keyPressed(KeyEvent event) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void keyReleased(KeyEvent event) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void mousePressed(MouseEvent event) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void mouseReleased(MouseEvent event) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void mouseMoved(MouseEvent event) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	/**

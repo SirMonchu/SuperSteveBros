@@ -131,8 +131,13 @@ public class MouseInputs {
         gamePanel.setOnMouseDragged(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				
-				
+				switch (Gamestate.state) {
+				case PLAYING:
+					gamePanel.getGame().getPlaying().mouseDragged(event);
+					break;
+				default:
+					break;
+				}
 			}
         });
     }
