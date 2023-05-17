@@ -1,22 +1,35 @@
 package proyectoFinal.SuperSteveBros.gameStates;
 
-import javafx.application.Platform;
-import javafx.event.EventHandler;
+import java.awt.image.BufferedImage;
+
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import proyectoFinal.SuperSteveBros.Game;
-import proyectoFinal.SuperSteveBros.Imputs.MouseInputs;
-import proyectoFinal.SuperSteveBros.View.GamePanel;
 import proyectoFinal.SuperSteveBros.Ui.MenuButton;
+import proyectoFinal.SuperSteveBros.utilz.LoadSave;
 
 public class Menu extends State implements StateMethods {
 	
 	private MenuButton[] buttons = new MenuButton[3];
+	private BufferedImage backgroundImg;
+	private int menuX, menuY, menuWight, menuHeight;
+	private ImageView background;
 	
 	public Menu(Game game) {
 		super(game);
 		loadButtons();
+		loadBackground();
+	}
+
+	private void loadBackground() {
+		backgroundImg = LoadSave.GetSpriteAtlas(LoadSave.MENU_BACKGROUND);
+		menuWight = (int) (backgroundImg.getWidth() * Game.SCALE);
+		menuHeight = (int) (backgroundImg.getHeight() * Game.SCALE);
+		menuX = Game.GAME_WIDTH / 2 - menuWight / 2;
+		menuY = (int) (45 * Game.SCALE);
+		background = LoadSave.convertToFxImageView(backgroundImg);
 	}
 
 	private void loadButtons() {
@@ -34,6 +47,14 @@ public class Menu extends State implements StateMethods {
 
 	@Override
 	public void draw(Pane root) {
+		
+		background.setX(menuX);
+		background.setY(menuY);
+		background.setFitWidth(menuWight);
+		background.setFitHeight(menuHeight);
+		root.getChildren().remove(background);
+		root.getChildren().add(background);
+		
 		for (MenuButton mb : buttons) {
 			mb.draw(root);
 		}

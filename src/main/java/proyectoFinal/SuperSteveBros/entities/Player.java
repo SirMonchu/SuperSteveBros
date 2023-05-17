@@ -24,7 +24,7 @@ public class Player extends Entity {
     private int playerAction = IDLE;
     private boolean moving = false;
     private boolean running = false;
-    private float speed = 2;
+    private float speed = 1 * Game.SCALE;
     private boolean sneaking = false;
     private BufferedImage img;
     private boolean left, up, right, down, jump;
@@ -47,7 +47,7 @@ public class Player extends Entity {
 		imageView.setFitWidth(width);
 		imageView.setFitHeight(height);
 		loadAnimations();
-		iniHitbox(x, y, 17 * Game.SCALE, 29 * Game.SCALE);
+		iniHitbox(x, y, (int) (17 * Game.SCALE), (int) (29 * Game.SCALE));
 	}
 	
 	public void update() {
