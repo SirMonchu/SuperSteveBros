@@ -57,13 +57,13 @@ public class Player extends Entity {
         setAnimation();     
 	}
 
-	public void render(Pane root) {
+	public void render(Pane root, int lvlOffset) {
 		    imageView.setImage(animations[playerAction][aniIndex]);
-		    imageView.setX((int) (hitBox.x - xDrawOffset));
+		    imageView.setX((int) (hitBox.x - xDrawOffset) - lvlOffset);
 		    imageView.setY((int) (hitBox.y - yDrawOffset));
 		    root.getChildren().remove(imageView);
 		    root.getChildren().add(imageView);
-		    drawHitbox(root);
+//		    drawHitbox(root);
 	}
 	
     private void loadAnimations() {
@@ -95,7 +95,7 @@ public class Player extends Entity {
 		imageView.setFitHeight(height);
 		if ((right || left) && running && !sneaking) {
 			speed *= 1.5;
-			yDrawOffset = 6 * Game.SCALE;
+			yDrawOffset = 4 * Game.SCALE;
 			imageView.setFitWidth(width * 1.1);
 			imageView.setFitHeight(height * 1.1);
 		} else if ((right || left) && sneaking && !running) {
@@ -116,8 +116,11 @@ public class Player extends Entity {
 
         if (jump)
             jump();
-        if (!left && !right && !inAir)
-            return;
+        if (!inAir) {
+        	if ((!left && !right) || (left && right)) {
+        		return;
+        	}
+        }
 
         float xSpeed = 0;
         

@@ -1,10 +1,12 @@
 module proyectoFinal.SuperSteveBros {
     requires javafx.controls;
     requires javafx.fxml;
-	requires java.desktop;
-	requires transitive javafx.graphics;
-	
-    opens proyectoFinal.SuperSteveBros to javafx.fxml;
-    exports proyectoFinal.SuperSteveBros;
+    requires javafx.graphics;
+    requires java.sql;
+    requires java.desktop;
 
+    opens proyectoFinal.SuperSteveBros to javafx.fxml;
+    opens proyectoFinal.SuperSteveBros.FXMLcontrollers to javafx.fxml;
+    exports proyectoFinal.SuperSteveBros;
+    exports proyectoFinal.SuperSteveBros.FXMLcontrollers;
 }

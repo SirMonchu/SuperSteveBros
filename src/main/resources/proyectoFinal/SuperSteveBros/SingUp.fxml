@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="proyectoFinal.SuperSteveBros.FXMLcontrollers.SignUpController">
+    <children>
+        <VBox alignment="CENTER" layoutX="210.0" layoutY="101.0" spacing="10.0">
+            <Label style="-fx-font-size: 24px; -fx-font-family: 'Arial Black'; -fx-text-fill: black;" text="Registrarse" />
+            <TextField id="txtUsername" fx:id="SingUpUserName" promptText="Nombre de usuario" style="-fx-font-size: 16px;" />
+            <PasswordField id="txtPassword" fx:id="SignUpPassword" promptText="Contraseña" style="-fx-font-size: 16px;" />
+            <HBox alignment="CENTER" spacing="10.0">
+                <Button id="btnBack" fx:id="backButton" onAction="#handleBackButton" style="-fx-font-size: 16px; -fx-background-color: #E91E63; -fx-text-fill: white;" text="Atrás" />
+                <Button id="btnRegister" fx:id="SignUpButton" onAction="#handleRegisterButton" style="-fx-font-size: 16px; -fx-background-color: #2196F3; -fx-text-fill: white;" text="Registrarse" />
+            </HBox>
+        </VBox>
+      <Label fx:id="errorText" layoutX="230.0" layoutY="296.0" opacity="0.0" text="EL USUARIO YA EXISTE" textFill="RED" />
+    </children>
+    <padding>
+        <Insets top="50.0" />
+    </padding>
+</AnchorPane>

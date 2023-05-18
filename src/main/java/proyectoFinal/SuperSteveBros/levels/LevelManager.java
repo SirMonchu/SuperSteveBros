@@ -33,14 +33,14 @@ public class LevelManager {
 	    }
 	}
 
-	public void draw(Pane root) {
+	public void draw(Pane root, int lvlOffset) {
 		for (int j = 0; j < Game.TILES_IN_HEIGHT; j++) {
-			for (int i = 0; i < Game.TILES_IN_WIDTH; i++) {
+			for (int i = 0; i < levelOne.getLvlData()[0].length; i++) {
 				 int index = levelOne.getSpriteIndex(i, j);
 				 imageView = new ImageView(image[index]);
 				 imageView.setFitWidth(Game.TILES_SIZE);
 				 imageView.setFitHeight(Game.TILES_SIZE);
-				 imageView.setX(Game.TILES_SIZE*i);
+				 imageView.setX(Game.TILES_SIZE*i - lvlOffset);
 				 imageView.setY(Game.TILES_SIZE*j);
 				 root.getChildren().remove(imageView);
 				 root.getChildren().add(imageView);
