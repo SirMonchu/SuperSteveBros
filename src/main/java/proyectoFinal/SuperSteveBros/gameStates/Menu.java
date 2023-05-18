@@ -13,14 +13,16 @@ import proyectoFinal.SuperSteveBros.utilz.LoadSave;
 public class Menu extends State implements StateMethods {
 	
 	private MenuButton[] buttons = new MenuButton[3];
-	private BufferedImage backgroundImg;
+	private BufferedImage backgroundImg, MenuBg;
 	private int menuX, menuY, menuWight, menuHeight;
-	private ImageView background;
+	private ImageView background, menubg;
 	
 	public Menu(Game game) {
 		super(game);
 		loadButtons();
 		loadBackground();
+		MenuBg = LoadSave.GetSpriteAtlas(LoadSave.MENU_BG);
+		menubg = LoadSave.convertToFxImageView(MenuBg);
 	}
 
 	private void loadBackground() {
@@ -47,6 +49,12 @@ public class Menu extends State implements StateMethods {
 
 	@Override
 	public void draw(Pane root) {
+		menubg.setX(0);
+		menubg.setY(0);
+		menubg.setFitWidth(Game.GAME_WIDTH);
+		menubg.setFitHeight(Game.GAME_HEIGHT);
+		root.getChildren().remove(menubg);
+		root.getChildren().add(menubg);
 		
 		background.setX(menuX);
 		background.setY(menuY);
