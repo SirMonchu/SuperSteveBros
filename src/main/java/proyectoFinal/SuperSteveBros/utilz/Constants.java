@@ -20,7 +20,9 @@ public class Constants {
 		public static final int ZOMBIE_HEIGHT_DEF = 56;
 		public static final int ZOMBIE_WIDTH = (int) (ZOMBIE_WIDTH_DEF * Game.SCALE);
 		public static final int ZOMBIE_HEIGHT = (int) (ZOMBIE_HEIGHT_DEF * Game.SCALE);
-//		
+
+		public static final int ZOMBIE_DRAWOFFSET_X = (int) (10 * Game.SCALE);
+		public static final int ZOMBIE_DRAWOFFSET_Y = (int) (4 * Game.SCALE);
 		
 //		public static final int CRABBY = 0;
 //

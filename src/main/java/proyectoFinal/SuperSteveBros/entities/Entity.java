@@ -20,9 +20,9 @@ public abstract class Entity {
 		this.height = height;
 	}
 	
-	protected void drawHitbox(Pane root) {
+	protected void drawHitbox(Pane root, int xLvlOffset) {
 //		gc.strokeRect(hitBox.x, hitBox.y, hitBox.width, hitBox.height);
-		fxRect.setX(hitBox.x);
+		fxRect.setX(hitBox.x - xLvlOffset);
 		fxRect.setY(hitBox.y);
 		root.getChildren().remove(fxRect);
 		root.getChildren().add(fxRect);

@@ -28,23 +28,23 @@ public class EnemyManager {
 		System.out.println("Size off Zombies: " + zombies.size());
 	}
 
-	public void update() {
+	public void update(int[][] lvlData) {
 		for (Zombie z : zombies) {
-			z.update();
+			z.update(lvlData);
 		}
 	}
 	
 	public void draw(Pane root, int xLvlOffset) {
-		drawCrabs(root, xLvlOffset);
+		drawZombies(root, xLvlOffset);
 	}
 
-	private void drawCrabs(Pane root, int xLvlOffset) {
+	private void drawZombies(Pane root, int xLvlOffset) {
 		for (Zombie z : zombies) {
 			ImageView zombieImageView = zombieArray[z.getEnemyState()][z.getAniIndex()];
             zombieImageView.setX(z.getHitbox().x - xLvlOffset);
-            zombieImageView.setY(z.getHitbox().y);
-            zombieImageView.setFitWidth(ZOMBIE_WIDTH);
-            zombieImageView.setFitHeight(ZOMBIE_HEIGHT);
+            zombieImageView.setY(z.getHitbox().y - 18);
+            zombieImageView.setFitWidth(ZOMBIE_WIDTH - 4);
+            zombieImageView.setFitHeight(ZOMBIE_HEIGHT - 20);
             root.getChildren().remove(zombieImageView);
             root.getChildren().add(zombieImageView);
         }
