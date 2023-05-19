@@ -35,11 +35,6 @@ public abstract class Entity {
 		fxRect.setStroke(Color.RED);
 	}
 	
-//	protected void updateHitBox() {
-//		hitBox.x = (int) x;
-//		hitBox.y = (int) y;
-//	}
-	
 	public Rectangle2D.Float getHitbox() {
 		return hitBox;
 		

@@ -63,7 +63,7 @@ public class Player extends Entity {
 		    imageView.setY((int) (hitBox.y - yDrawOffset));
 		    root.getChildren().remove(imageView);
 		    root.getChildren().add(imageView);
-//		    drawHitbox(root, lvlOffset);
+		    drawHitbox(root, lvlOffset);
 	}
 	
     private void loadAnimations() {
