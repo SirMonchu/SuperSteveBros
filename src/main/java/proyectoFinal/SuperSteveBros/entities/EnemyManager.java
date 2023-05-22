@@ -2,11 +2,14 @@ package proyectoFinal.SuperSteveBros.entities;
 
 import static proyectoFinal.SuperSteveBros.utilz.Constants.EnemyConstants.*;
 
+import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import proyectoFinal.SuperSteveBros.gameStates.Playing;
 import proyectoFinal.SuperSteveBros.utilz.LoadSave;
 
@@ -16,6 +19,7 @@ public class EnemyManager {
 	private ImageView[][] zombieArray;
 	private ArrayList<Zombie> zombies = new ArrayList<>();
 	private ImageView zombieImageView;
+	protected Rectangle fxRect;
 	
 	public EnemyManager(Playing playing) {
 		this.playing = playing;
@@ -28,26 +32,43 @@ public class EnemyManager {
 		System.out.println("Size off Zombies: " + zombies.size());
 	}
 
-	public void update() {
+	public void update(int[][] lvlData, Player player) {
 		for (Zombie z : zombies) {
-			z.update();
+			if (z.isActive()) {
+				z.update(lvlData, player);
+			}
 		}
 	}
 	
 	public void draw(Pane root, int xLvlOffset) {
-		drawCrabs(root, xLvlOffset);
+		drawZombies(root, xLvlOffset);
 	}
 
-	private void drawCrabs(Pane root, int xLvlOffset) {
+	private void drawZombies(Pane root, int xLvlOffset) {
 		for (Zombie z : zombies) {
-			ImageView zombieImageView = zombieArray[z.getEnemyState()][z.getAniIndex()];
-            zombieImageView.setX(z.getHitbox().x - xLvlOffset);
-            zombieImageView.setY(z.getHitbox().y);
-            zombieImageView.setFitWidth(ZOMBIE_WIDTH);
-            zombieImageView.setFitHeight(ZOMBIE_HEIGHT);
-            root.getChildren().remove(zombieImageView);
-            root.getChildren().add(zombieImageView);
+			if (z.isActive()) {
+				ImageView zombieImageView = zombieArray[z.getEnemyState()][z.getAniIndex()];
+	            zombieImageView.setX(z.getHitbox().x - xLvlOffset - 18);
+	            zombieImageView.setY(z.getHitbox().y - 18);
+	            zombieImageView.setFitWidth(ZOMBIE_WIDTH - 6);
+	            zombieImageView.setFitHeight(ZOMBIE_HEIGHT - 22);
+	            root.getChildren().remove(zombieImageView);
+	            root.getChildren().add(zombieImageView);
+	            z.drawAttackBox(root, xLvlOffset);
+	            z.drawHitbox(root, xLvlOffset);
+			}
         }
+	}
+	
+	public void checkEnemyHit(Rectangle2D.Float attackBox) {
+		for (Zombie z : zombies) {
+			if (z.isActive()) {
+				if (attackBox.intersects(z.getHitbox())) {
+					z.hurt(1);
+					return;
+				}
+			}
+		}
 	}
 
     private void loadEnemyImgs() {
@@ -62,4 +83,22 @@ public class EnemyManager {
             }
         }
     }
+    
+	protected void drawHitbox(Pane root, int xLvlOffset) {
+		for (Zombie z : zombies) {
+		fxRect = new Rectangle((int) z.getHitbox().x, (int) z.getHitbox().y - 18, (int) z.getHitbox().width, (int) z.getHitbox().height);
+		fxRect.setFill(Color.TRANSPARENT);
+		fxRect.setStroke(Color.RED);
+		fxRect.setX(z.getHitbox().x - xLvlOffset);
+		fxRect.setY(z.getHitbox().y);
+		root.getChildren().remove(fxRect);
+		root.getChildren().add(fxRect);
+		}
+	}
+
+	public void resetAllEnemies() {
+		for (Zombie z : zombies) {
+			z.resetEnemy();
+		}
+	}
 }

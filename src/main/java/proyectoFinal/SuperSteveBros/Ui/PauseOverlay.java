@@ -159,7 +159,7 @@ public class PauseOverlay implements StateMethods {
 	    	}
 	    } else if (isIn(event, replayB)) {
 	    	if (replayB.isMousePressed()) {
-	    		System.out.println("Replay lvl");
+	    		playing.resetAll();
 	    	}
 	    } else if (isIn(event, unPauseB)) {
 	    	if (unPauseB.isMousePressed()) {

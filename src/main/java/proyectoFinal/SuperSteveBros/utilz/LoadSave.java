@@ -36,6 +36,8 @@ public class LoadSave {
 	public static final String BIG_CLOUDS = "big_clouds.png";
 //	public static final String ZOMBIE_ATLAS = "zomibieSprite.png";
 	public static final String ZOMBIE_ATLAS = "zomibieSprite1.png";
+	public static final String PLAYER_BAR = "health_power_bar.png";
+	public static final String GAME_OVER = "game-over.jpg";
 	
 	public static BufferedImage GetSpriteAtlas(String fileName) {
 		BufferedImage img = null;
