@@ -1,8 +1,16 @@
 package proyectoFinal.SuperSteveBros.utilz;
 
-import java.awt.geom.Rectangle2D;
+import static proyectoFinal.SuperSteveBros.utilz.Constants.EnemyConstants.ZOMBIE;
 
+import java.awt.Color;
+import java.awt.Point;
+import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+
+import javafx.scene.image.ImageView;
 import proyectoFinal.SuperSteveBros.Game;
+import proyectoFinal.SuperSteveBros.entities.Zombie;
 
 public class HelpMethods {
 	public static boolean CanMoveHere(float x, float y, float width, float height, int[][] lvlData) {
@@ -71,7 +79,10 @@ public class HelpMethods {
 	}
 	
 	public static boolean isFloor(Rectangle2D.Float hitBox, float xSpeed, int[][] lvlData) {
-		return IsSolid(hitBox.x + xSpeed, hitBox.y + hitBox.height + 1, lvlData);
+		if (xSpeed > 0)
+			return IsSolid(hitBox.x + hitBox.width + xSpeed, hitBox.y + hitBox.height + 1, lvlData);
+		else
+			return IsSolid(hitBox.x + xSpeed, hitBox.y + hitBox.height + 1, lvlData);
 	}
 	
 	public static boolean IsAllTileWalkable(int xSart, int xEnd, int y, int[][] lvlData) {
@@ -96,5 +107,47 @@ public class HelpMethods {
 		} else {
 			return IsAllTileWalkable(firstXTile, secondXTile, yTile, lvlData);
 		}
+	}
+	
+	public static int[][] GetLevelData(BufferedImage img) {
+		int[][] lvlData = new int[img.getHeight()][img.getWidth()];
+		
+		for (int j = 0; j < img.getHeight(); j++)
+			for (int i = 0; i < img.getWidth(); i++) {
+				Color color = new Color(img.getRGB(i, j));
+				int value = color.getRed();
+				if (value >= 48) {
+					value = 0;
+				}
+				lvlData[j][i] = value;
+			}
+		return lvlData;
+
+	}
+	
+	public static ArrayList<Zombie> GetZombies(BufferedImage img){
+		ArrayList<Zombie> List = new ArrayList<>();
+		
+		for (int j = 0; j < img.getHeight(); j++)
+			for (int i = 0; i < img.getWidth(); i++) {
+				Color color = new Color(img.getRGB(i, j));
+				int value = color.getGreen();
+				if (value == ZOMBIE) {
+					List.add(new Zombie(i * Game.TILES_SIZE, j * Game.TILES_SIZE));
+				}
+			}
+		return List;
+	}
+	
+	public static Point GetPlayerSpawn(BufferedImage img) {
+		for (int j = 0; j < img.getHeight(); j++)
+			for (int i = 0; i < img.getWidth(); i++) {
+				Color color = new Color(img.getRGB(i, j));
+				int value = color.getGreen();
+				if (value == 100) {
+					return new Point(i * Game.TILES_SIZE, j * Game.TILES_SIZE);
+				}
+			}
+		return new Point(1 * Game.TILES_SIZE, 1 * Game.TILES_SIZE);
 	}
 }

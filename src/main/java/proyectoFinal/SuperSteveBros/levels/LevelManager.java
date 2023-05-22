@@ -1,10 +1,13 @@
 package proyectoFinal.SuperSteveBros.levels;
 
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.image.Image;
 import proyectoFinal.SuperSteveBros.Game;
+import proyectoFinal.SuperSteveBros.gameStates.Gamestate;
 import proyectoFinal.SuperSteveBros.utilz.LoadSave;
 
 public class LevelManager {
@@ -12,15 +15,38 @@ public class LevelManager {
 	private Game game;
 	private BufferedImage [] levelSprite;
 	private Image[] image = new Image[48];
-	private Level levelOne;
+	private ArrayList<Level> levels;
+	private int lvlIndex = 0;
 	private ImageView imageView;
 	
 	public LevelManager(Game game) {
 		this.game = game;
 		importOutsideSprites();
-		levelOne = new Level(LoadSave.GetLevelData());
+		levels = new ArrayList<>();
+		buildAllLevels();
 	}
 	
+	private void buildAllLevels() {
+		BufferedImage[] allLevels = LoadSave.GetAllLevels();
+		for (BufferedImage img : allLevels) {
+			levels.add(new Level(img));
+		}
+	}
+	
+
+	public void loadNextLevel() {
+		lvlIndex ++;
+		if (lvlIndex >= levels.size()) {
+			lvlIndex = 0;
+			System.out.println("HAS TERMIANDO");
+			Gamestate.state = Gamestate.MENU;
+		}
+		Level newLevel = levels.get(lvlIndex);
+		game.getPlaying().getEnemyManager().loadEnemies(newLevel);
+		game.getPlaying().getPlayer().loadLvlData(newLevel.getLvlData());
+		game.getPlaying().setMaxLvlOffset(newLevel.getLvlOffset());
+	}
+
 	private void importOutsideSprites() {
 	    BufferedImage img = LoadSave.GetSpriteAtlas(LoadSave.LEVEL_ATLAS);
 	    levelSprite = new BufferedImage[48];
@@ -35,8 +61,8 @@ public class LevelManager {
 
 	public void draw(Pane root, int lvlOffset) {
 		for (int j = 0; j < Game.TILES_IN_HEIGHT; j++) {
-			for (int i = 0; i < levelOne.getLvlData()[0].length; i++) {
-				 int index = levelOne.getSpriteIndex(i, j);
+			for (int i = 0; i < levels.get(lvlIndex).getLvlData()[0].length; i++) {
+				 int index = levels.get(lvlIndex).getSpriteIndex(i, j);
 				 imageView = new ImageView(image[index]);
 				 imageView.setFitWidth(Game.TILES_SIZE);
 				 imageView.setFitHeight(Game.TILES_SIZE);
@@ -53,6 +79,11 @@ public class LevelManager {
 	}
 	
 	public Level getLevel() {
-		return levelOne;
+		return levels.get(lvlIndex);
 	}
+	
+	public int getAmountOfLevels() {
+		return levels.size();
+	}
+
 }

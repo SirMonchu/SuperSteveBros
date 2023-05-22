@@ -46,7 +46,6 @@ public class LoginController {
     private void handleLoginButton() {
         String username = loginUsername.getText();
         String password = loginPassword.getText();
-        System.out.println("Estas aqui");
         // Realizar consulta a la base de datos para verificar la existencia del usuario
         boolean userExists = checkUserExistence(username, password);
 
