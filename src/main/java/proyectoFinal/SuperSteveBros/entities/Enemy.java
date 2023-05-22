@@ -3,6 +3,9 @@ package proyectoFinal.SuperSteveBros.entities;
 import static proyectoFinal.SuperSteveBros.utilz.Constants.EnemyConstants.*;
 import static proyectoFinal.SuperSteveBros.utilz.HelpMethods.*;
 
+import java.awt.geom.Rectangle2D;
+import java.awt.geom.Rectangle2D.Float;
+
 import static proyectoFinal.SuperSteveBros.utilz.Constants.Directions.*;
 
 import proyectoFinal.SuperSteveBros.Game;
@@ -21,11 +24,17 @@ public abstract class Enemy extends Entity{
 	protected int walkDir = LEFT;
 	protected int tileY;
 	protected float attackDistance = Game.TILES_SIZE;
+	protected int maxHealth;
+	protected int currentHealt;
+	protected boolean active = true;
+	protected boolean attacChecked;
 	
 	public Enemy(float x, float y, int width, int height, int enemyType) {
 		super(x, y, width, height);
 		this.enemyType = enemyType;
 		iniHitbox(x, y, width, height);
+		maxHealth = GetMaxHealth(enemyType);
+		currentHealt = maxHealth;
 	}
 	
 	protected void firstUpdateCheck(int[][] lvlData) {
@@ -33,6 +42,30 @@ public abstract class Enemy extends Entity{
 			inAir = true;
 		}
 		firstUpdate = false;
+	}
+	
+	public void hurt(int damage) {
+		currentHealt -= damage;
+		if (currentHealt <= 0) {
+			if(walkDir == RIGHT) {
+				newState(DIE_RIGHT);
+			} else {
+				newState(DIE_LEFT);
+			}
+		} else {
+			if(walkDir == RIGHT) {
+				newState(IDLE_RIGHT);
+			} else {
+				newState(IDLE_LEFT);
+			}
+		}
+	}
+	
+	protected void checkPlayerHit(Rectangle2D.Float attackBox, Player player) {
+		if (attackBox.intersects(player.hitBox)) {
+			player.changeHealth(-GetEnemyDamage(enemyType));
+		}
+		attacChecked = true;
 	}
 	
 	protected void updateInAir(int[][] lvlData) {
@@ -121,6 +154,8 @@ public abstract class Enemy extends Entity{
                 	  } else {
                 		  enemyState = IDLE_RIGHT;
                 	  }
+                  } else if (enemyState == DIE_RIGHT || enemyState == DIE_LEFT) {
+                	  active = false;
                   }
               }
           }
@@ -133,6 +168,21 @@ public abstract class Enemy extends Entity{
 			walkDir = LEFT;
 		}
 	}
+	
+
+	public void resetEnemy() {
+		hitBox.x = x;
+		hitBox.y = y;
+		firstUpdate = true;
+		currentHealt = maxHealth;
+		if (walkDir == RIGHT) {
+			newState(IDLE_RIGHT);
+		} else {
+			newState(IDLE_LEFT);
+		}
+		active = true;
+		fallSpeed = 0;
+	}
 
 	public int getAniIndex() {
 		return aniIndex;
@@ -140,5 +190,9 @@ public abstract class Enemy extends Entity{
 	
 	public int getEnemyState() {
 		return enemyState;
+	}
+	
+	public boolean isActive() {
+		return active;
 	}
 }

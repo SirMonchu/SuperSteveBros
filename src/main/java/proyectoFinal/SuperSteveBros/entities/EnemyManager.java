@@ -2,6 +2,7 @@ package proyectoFinal.SuperSteveBros.entities;
 
 import static proyectoFinal.SuperSteveBros.utilz.Constants.EnemyConstants.*;
 
+import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 
 import javafx.scene.image.Image;
@@ -33,25 +34,41 @@ public class EnemyManager {
 
 	public void update(int[][] lvlData, Player player) {
 		for (Zombie z : zombies) {
-			z.update(lvlData, player);
+			if (z.isActive()) {
+				z.update(lvlData, player);
+			}
 		}
 	}
 	
 	public void draw(Pane root, int xLvlOffset) {
 		drawZombies(root, xLvlOffset);
-		drawHitbox(root, xLvlOffset);
 	}
 
 	private void drawZombies(Pane root, int xLvlOffset) {
 		for (Zombie z : zombies) {
-			ImageView zombieImageView = zombieArray[z.getEnemyState()][z.getAniIndex()];
-            zombieImageView.setX(z.getHitbox().x - xLvlOffset - 18);
-            zombieImageView.setY(z.getHitbox().y - 18);
-            zombieImageView.setFitWidth(ZOMBIE_WIDTH - 6);
-            zombieImageView.setFitHeight(ZOMBIE_HEIGHT - 22);
-            root.getChildren().remove(zombieImageView);
-            root.getChildren().add(zombieImageView);
+			if (z.isActive()) {
+				ImageView zombieImageView = zombieArray[z.getEnemyState()][z.getAniIndex()];
+	            zombieImageView.setX(z.getHitbox().x - xLvlOffset - 18);
+	            zombieImageView.setY(z.getHitbox().y - 18);
+	            zombieImageView.setFitWidth(ZOMBIE_WIDTH - 6);
+	            zombieImageView.setFitHeight(ZOMBIE_HEIGHT - 22);
+	            root.getChildren().remove(zombieImageView);
+	            root.getChildren().add(zombieImageView);
+	            z.drawAttackBox(root, xLvlOffset);
+	            z.drawHitbox(root, xLvlOffset);
+			}
         }
+	}
+	
+	public void checkEnemyHit(Rectangle2D.Float attackBox) {
+		for (Zombie z : zombies) {
+			if (z.isActive()) {
+				if (attackBox.intersects(z.getHitbox())) {
+					z.hurt(1);
+					return;
+				}
+			}
+		}
 	}
 
     private void loadEnemyImgs() {
@@ -76,6 +93,12 @@ public class EnemyManager {
 		fxRect.setY(z.getHitbox().y);
 		root.getChildren().remove(fxRect);
 		root.getChildren().add(fxRect);
+		}
+	}
+
+	public void resetAllEnemies() {
+		for (Zombie z : zombies) {
+			z.resetEnemy();
 		}
 	}
 }
