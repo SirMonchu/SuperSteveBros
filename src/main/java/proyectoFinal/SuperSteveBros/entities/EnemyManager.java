@@ -11,6 +11,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import proyectoFinal.SuperSteveBros.gameStates.Playing;
+import proyectoFinal.SuperSteveBros.levels.Level;
 import proyectoFinal.SuperSteveBros.utilz.LoadSave;
 
 public class EnemyManager {
@@ -24,20 +25,22 @@ public class EnemyManager {
 	public EnemyManager(Playing playing) {
 		this.playing = playing;
 		loadEnemyImgs();
-		addEnemies();
 	}
 	
-	private void addEnemies() {
-		zombies = LoadSave.GetZombies();
+	public void loadEnemies(Level level) {
+		zombies = level.getZombies();
 		System.out.println("Size off Zombies: " + zombies.size());
 	}
 
 	public void update(int[][] lvlData, Player player) {
-		for (Zombie z : zombies) {
+		boolean isAnyActive = false;
+		for (Zombie z : zombies)
 			if (z.isActive()) {
 				z.update(lvlData, player);
+				isAnyActive = true;
 			}
-		}
+		if(!isAnyActive)
+			playing.setLevelCompleted(true);
 	}
 	
 	public void draw(Pane root, int xLvlOffset) {

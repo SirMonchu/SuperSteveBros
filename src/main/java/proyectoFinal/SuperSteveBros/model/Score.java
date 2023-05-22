@@ -1,42 +1,43 @@
 package proyectoFinal.SuperSteveBros.model;
 
 public class Score {
-    private int playerId;
-    private int levelId;
+	
+    private Player player;
+    private Level level;
     private int score;
 
-    public Score(int playerId, int levelId, int score) {
-        this.playerId = playerId;
-        this.levelId = levelId;
+    public Score(Player player, Level level, int score) {
+        this.player = player;
+        this.level = level;
         this.score = score;
     }
 
 	/**
-	 * @return the playerId
+	 * @return the player
 	 */
-	public int getPlayerId() {
-		return playerId;
+	public Player getPlayer() {
+		return player;
 	}
 
 	/**
-	 * @param playerId the playerId to set
+	 * @param player the player to set
 	 */
-	public void setPlayerId(int playerId) {
-		this.playerId = playerId;
+	public void setPlayer(Player player) {
+		this.player = player;
 	}
 
 	/**
-	 * @return the levelId
+	 * @return the level
 	 */
-	public int getLevelId() {
-		return levelId;
+	public Level getLevel() {
+		return level;
 	}
 
 	/**
-	 * @param levelId the levelId to set
+	 * @param level the level to set
 	 */
-	public void setLevelId(int levelId) {
-		this.levelId = levelId;
+	public void setLevel(Level level) {
+		this.level = level;
 	}
 
 	/**
@@ -52,6 +53,8 @@ public class Score {
 	public void setScore(int score) {
 		this.score = score;
 	}
-
+    
+    
+    
 }
 

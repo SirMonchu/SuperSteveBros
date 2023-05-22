@@ -9,6 +9,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import proyectoFinal.SuperSteveBros.Game;
+import proyectoFinal.SuperSteveBros.entities.Player;
 import proyectoFinal.SuperSteveBros.gameStates.Gamestate;
 import proyectoFinal.SuperSteveBros.gameStates.Playing;
 import proyectoFinal.SuperSteveBros.gameStates.StateMethods;
@@ -156,6 +157,7 @@ public class PauseOverlay implements StateMethods {
 	    	if (menuB.isMousePressed()) {
 	            Gamestate.state = Gamestate.MENU;
 	            playing.unPause();
+	            playing.resetAll();
 	    	}
 	    } else if (isIn(event, replayB)) {
 	    	if (replayB.isMousePressed()) {

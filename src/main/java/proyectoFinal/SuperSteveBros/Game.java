@@ -1,9 +1,11 @@
 package proyectoFinal.SuperSteveBros;
 
 import proyectoFinal.SuperSteveBros.View.GamePanel;
+import proyectoFinal.SuperSteveBros.entities.Player;
 import proyectoFinal.SuperSteveBros.gameStates.Gamestate;
 import proyectoFinal.SuperSteveBros.gameStates.Menu;
 import proyectoFinal.SuperSteveBros.gameStates.Playing;
+import proyectoFinal.SuperSteveBros.utilz.LoadSave;
 import javafx.application.Platform;
 import javafx.scene.layout.Pane;
 import proyectoFinal.SuperSteveBros.Imputs.KeyBoardInputs;
@@ -46,6 +48,8 @@ public class Game implements Runnable {
 	
 	public void stopGameLoop() {
 		gameThread.stop();
+		playing.getPlayer();
+		Player.getCuentaThread().stop();
 	}
 	
 	public GamePanel getGamePanel() {

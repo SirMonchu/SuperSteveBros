@@ -8,6 +8,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import proyectoFinal.SuperSteveBros.Game;
 import proyectoFinal.SuperSteveBros.Ui.MenuButton;
+import proyectoFinal.SuperSteveBros.entities.Player;
 import proyectoFinal.SuperSteveBros.utilz.LoadSave;
 
 public class Menu extends State implements StateMethods {

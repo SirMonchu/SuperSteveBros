@@ -10,8 +10,11 @@ import static proyectoFinal.SuperSteveBros.utilz.Constants.PlayerConstants.SNEAK
 import static proyectoFinal.SuperSteveBros.utilz.Constants.PlayerConstants.WALKING_LEFT;
 import static proyectoFinal.SuperSteveBros.utilz.Constants.PlayerConstants.WALKING_RIGHT;
 
+import java.awt.Point;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
+
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import proyectoFinal.SuperSteveBros.Game;
 import proyectoFinal.SuperSteveBros.gameStates.Playing;
@@ -38,6 +41,10 @@ public class Player extends Entity {
     private float xDrawOffset = 10 * Game.SCALE;
     private float yDrawOffset = 4 * Game.SCALE;
     private ImageView imageView;
+    private static Thread cuentaThread;
+    private static int segundos;
+    private Text text;
+    private Font customFont;
     
     //JUMPING // GRAVITY
     
@@ -77,6 +84,7 @@ public class Player extends Entity {
 	
 	
 	private Playing playing;
+	private boolean firstMove = true;
     
 	public Player(float x, float y, int width, int height, Playing playing) {
 		super(x, y, width, height);
@@ -93,6 +101,15 @@ public class Player extends Entity {
 		fxRect.setFill(Color.RED);
 		iniHitbox(x, y, (int) (17 * Game.SCALE), (int) (29 * Game.SCALE));
 		initAttackBox();
+		text = new Text();
+		customFont = Font.loadFont(getClass().getResourceAsStream("/proyectoFinal/SuperSteveBros/Extrude.ttf"), 70);
+	}
+	
+	public void setSpawn(Point spawn) {
+		this.x = spawn.x;
+		this.y = spawn.y;
+		hitBox.x = x;
+		hitBox.y = y;
 	}
 	
 	private void initAttackBox() {
@@ -103,6 +120,7 @@ public class Player extends Entity {
 	}
 
 	public void update() {
+		checkFirstMove();
 		updateHealthBar();
 		if (currentHealth <= 0) {
 			playing.setGameOver(true);
@@ -115,7 +133,7 @@ public class Player extends Entity {
 			checkAttack();
 		}
         updateAniTick();
-        setAnimation();     
+        setAnimation();
 	}
 
 	private void checkAttack() {
@@ -154,14 +172,28 @@ public class Player extends Entity {
 	}
 
 	private void drawUI(Pane root) {
+		
+		// PLAYERUI
+		
     	playerUI.setX(statusBarX);
     	playerUI.setY(statusBarY);
     	root.getChildren().remove(playerUI);
 	    root.getChildren().add(playerUI);
+	    
+	    // HITBOX
+	    
 	    fxRect.setWidth(healthWidth);
 	    fxRect.setHeight(healthBarHeight);
 		root.getChildren().remove(fxRect);
 		root.getChildren().add(fxRect);
+		
+		// TIMER
+		
+		text.setX(780 * Game.SCALE);
+		text.setY(statusBarY * 3.5);
+		text.setFont(customFont);
+		root.getChildren().remove(text);
+		root.getChildren().add(text);
 	}
     
     public void changeHealth(int value) {
@@ -218,6 +250,13 @@ public class Player extends Entity {
 			xDrawOffset = 15 * Game.SCALE;
 			imageView.setFitWidth(width * 1.2);
 			imageView.setFitHeight(height * 1.2);
+		}
+	}
+	
+	private void checkFirstMove() {
+		if (moving && firstMove && !inAir) {
+			reiniciarCuentaAtras(60);
+			firstMove = false;
 		}
 	}
     	
@@ -316,6 +355,46 @@ public class Player extends Entity {
     		}
     	}
         
+        public void iniciarCuentaAtras(int duracionSegundos) {
+            segundos = duracionSegundos;
+            setCuentaThread(new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        for (int i = segundos; i >= 0; i--) {
+                        	text.setText(String.valueOf(i));
+                            Thread.sleep(1000); // Pausar el hilo durante 1 segundo
+                        }
+                        playing.setGameOver(true);
+                    } catch (InterruptedException e) {
+                        System.out.println("Cuenta atrás interrumpida.");
+                    }
+                }
+            }));
+            getCuentaThread().start();
+        }
+
+        public static void pausarCuentaAtras() {
+            if (getCuentaThread() != null && getCuentaThread().isAlive()) {
+                getCuentaThread().interrupt();
+                System.out.println("Cuenta atrás pausada.");
+            }
+        }
+
+        public void reanudarCuentaAtras() {
+            if (getCuentaThread() != null && !getCuentaThread().isAlive()) {
+                iniciarCuentaAtras(segundos);
+                System.out.println("Cuenta atrás reanudada.");
+            }
+        }
+
+        public void reiniciarCuentaAtras(int duracionSegundos) {
+            pausarCuentaAtras();
+            segundos = duracionSegundos;
+            iniciarCuentaAtras(segundos);
+            System.out.println("Cuenta atrás reiniciada a " + duracionSegundos + " segundos.");
+        }
+        
         public boolean isFalling() {
             return inAir && airSpeed > 0;
         }
@@ -404,6 +483,7 @@ public class Player extends Entity {
 		moving = false;
 		playerAction = IDLE;
 		currentHealth = maxHealth;
+		firstMove = true;
 		
 		hitBox.x = x;
 		hitBox.y = y;
@@ -412,7 +492,12 @@ public class Player extends Entity {
             inAir = true;
 	}
 
-	public Text getText() {
-		return this.displayText;
+	public static Thread getCuentaThread() {
+		return cuentaThread;
 	}
+
+	public static void setCuentaThread(Thread cuentaThread) {
+		Player.cuentaThread = cuentaThread;
+	}
+	
 }
