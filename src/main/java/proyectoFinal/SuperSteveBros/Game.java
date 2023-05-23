@@ -48,8 +48,9 @@ public class Game implements Runnable {
 	
 	public void stopGameLoop() {
 		gameThread.stop();
-		playing.getPlayer();
-		Player.getCuentaThread().stop();
+		if (Player.getCuentaThread() != null) {
+			Player.getCuentaThread().stop();
+		} 
 	}
 	
 	public GamePanel getGamePanel() {
