@@ -22,7 +22,7 @@ public class MainClass extends Application {
     }
 
     static void setLoginScene() throws IOException {
-        Parent root = loadFXML("Login");
+        Parent root = loadFXML("Login");	
         loginScene = new Scene(root);
     }
 
