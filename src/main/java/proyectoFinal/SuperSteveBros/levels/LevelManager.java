@@ -7,6 +7,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.image.Image;
 import proyectoFinal.SuperSteveBros.Game;
+import proyectoFinal.SuperSteveBros.entities.EnemyManager;
 import proyectoFinal.SuperSteveBros.gameStates.Gamestate;
 import proyectoFinal.SuperSteveBros.utilz.LoadSave;
 
@@ -80,6 +81,28 @@ public class LevelManager {
 	
 	public Level getLevel() {
 		return levels.get(lvlIndex);
+	}
+	
+	public int getLevelId() {
+		return lvlIndex;
+	}
+	
+	public String getLevelName() {
+		String lvlName;
+		lvlName = "Nivel " + lvlIndex;
+		return lvlName;
+	}
+	
+	public String getLevelDifficulty() {
+		String lvlDiff;
+		if (game.getPlaying().getEnemyManager().getEnemySize() < 2) {
+			lvlDiff = "facil";
+		} else if (game.getPlaying().getEnemyManager().getEnemySize() >= 2 && game.getPlaying().getEnemyManager().getEnemySize() < 4) {
+			lvlDiff = "media";
+		} else {
+			lvlDiff = "dificil";
+		}
+		return lvlDiff;
 	}
 	
 	public int getAmountOfLevels() {

@@ -51,6 +51,11 @@ public class Player {
 	public String getPassword() {
 		return password;
 	}
+
+	@Override
+	public String toString() {
+		return "Player [id=" + id + ", username=" + username + ", password=" + password + "]";
+	}
     
 }
 

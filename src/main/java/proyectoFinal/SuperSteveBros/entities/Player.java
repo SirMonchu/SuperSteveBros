@@ -45,6 +45,7 @@ public class Player extends Entity {
     private static int segundos;
     private Text text;
     private Font customFont;
+    private int score;
     
     //JUMPING // GRAVITY
     
@@ -103,6 +104,7 @@ public class Player extends Entity {
 		initAttackBox();
 		text = new Text();
 		customFont = Font.loadFont(getClass().getResourceAsStream("/proyectoFinal/SuperSteveBros/Extrude.ttf"), 70);
+		score = 60;
 	}
 	
 	public void setSpawn(Point spawn) {
@@ -363,6 +365,7 @@ public class Player extends Entity {
                     try {
                         for (int i = segundos; i >= 0; i--) {
                         	text.setText(String.valueOf(i));
+                        	changeScore(-1);
                             Thread.sleep(1000); // Pausar el hilo durante 1 segundo
                         }
                         playing.setGameOver(true);
@@ -499,5 +502,17 @@ public class Player extends Entity {
 	public static void setCuentaThread(Thread cuentaThread) {
 		Player.cuentaThread = cuentaThread;
 	}
+	
+    public void changeScore(int value) {
+        score += value;
+    } 
+    
+    public int getScore() {
+    	return this.score;
+    }
+    
+    public void resetScore() {
+    	score = 60;
+    }
 	
 }

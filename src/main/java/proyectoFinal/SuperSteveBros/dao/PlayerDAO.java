@@ -32,7 +32,7 @@ public class PlayerDAO implements DAO<Player> {
         );
     }
 
-    public PlayerDAO() {
+    public PlayerDAO(ConnectionData connectionData) {
         Connect connect = new Connect(connectionData);  // Crear instancia de Connect
         try {
             this.conn = connect.getConnection();
@@ -115,14 +115,14 @@ public class PlayerDAO implements DAO<Player> {
         return entity;
     }
 
-    private Player findByUsername(String username) throws SQLException {
+    public Player findByUsername(String username) throws SQLException {
         Player result = null;
         try (PreparedStatement pst = this.conn.prepareStatement(FINDBYUSERNAME)) {
             pst.setString(1, username);
             try (ResultSet res = pst.executeQuery()) {
                 if (res.next()) {
                     result = new Player(res.getString("username"), res.getString("password"));
-                    result.setId(res.getInt("id"));
+                    result.setId(res.getInt("Id"));
                 }
             }
         }

@@ -7,7 +7,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import proyectoFinal.SuperSteveBros.entities.Player;
+import proyectoFinal.SuperSteveBros.model.Player;
 
 public class MainClass extends Application {
 
@@ -36,8 +36,8 @@ public class MainClass extends Application {
     }
 
     // Método para realizar la transición al juego después del inicio de sesión
-    public static void startGame(Stage stage) throws IOException {
-        Game game = new Game();
+    public static void startGame(Stage stage, Player player) throws IOException {
+        Game game = new Game(player);
         stage.setScene(game.getGamePanel().getScene());
         stage.setResizable(false);
         stage.show();

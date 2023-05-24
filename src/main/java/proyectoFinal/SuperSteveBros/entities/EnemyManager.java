@@ -104,4 +104,8 @@ public class EnemyManager {
 			z.resetEnemy();
 		}
 	}
+	
+	public int getEnemySize() {
+		return zombies.size();
+	}
 }

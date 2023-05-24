@@ -1,14 +1,13 @@
 package proyectoFinal.SuperSteveBros;
 
+import javafx.application.Platform;
+import javafx.scene.layout.Pane;
+import proyectoFinal.SuperSteveBros.Imputs.KeyBoardInputs;
 import proyectoFinal.SuperSteveBros.View.GamePanel;
 import proyectoFinal.SuperSteveBros.entities.Player;
 import proyectoFinal.SuperSteveBros.gameStates.Gamestate;
 import proyectoFinal.SuperSteveBros.gameStates.Menu;
 import proyectoFinal.SuperSteveBros.gameStates.Playing;
-import proyectoFinal.SuperSteveBros.utilz.LoadSave;
-import javafx.application.Platform;
-import javafx.scene.layout.Pane;
-import proyectoFinal.SuperSteveBros.Imputs.KeyBoardInputs;
 
 public class Game implements Runnable {
 	
@@ -20,6 +19,7 @@ public class Game implements Runnable {
 
 	private Playing playing;
 	private Menu menu;
+	proyectoFinal.SuperSteveBros.model.Player player;
 	
 	public final static int TILES_DEFAULT_SIZE = 32;
 	public final static float SCALE = 2f;
@@ -29,7 +29,8 @@ public class Game implements Runnable {
 	public final static int GAME_WIDTH = TILES_SIZE * TILES_IN_WIDTH;
 	public final static int GAME_HEIGHT = TILES_SIZE * TILES_IN_HEIGHT;
 	
-	public Game() {
+	public Game(proyectoFinal.SuperSteveBros.model.Player player) {
+		this.player = player;
 		initClasses();
 		gamePanel = new GamePanel(this);
 		gamePanel.requestFocus();
@@ -140,5 +141,10 @@ public class Game implements Runnable {
 	
 	public Playing getPlaying() {
 		return playing;
+	}
+	
+	public proyectoFinal.SuperSteveBros.model.Player getPlayer() {
+		return this.player;
+		
 	}
 }

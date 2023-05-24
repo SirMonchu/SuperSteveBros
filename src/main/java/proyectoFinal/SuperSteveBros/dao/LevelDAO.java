@@ -32,7 +32,7 @@ public class LevelDAO implements DAO<Level> {
         );
     }
     
-    public LevelDAO() {
+    public LevelDAO(ConnectionData connectionData) {
         Connect connect = new Connect(connectionData);  // Crear instancia de Connect
         try {
             this.conn = connect.getConnection();

@@ -22,6 +22,21 @@ import proyectoFinal.SuperSteveBros.utils.Connect;
 import proyectoFinal.SuperSteveBros.utils.ConnectionData;
 
 public class LoginController {
+	
+	private Stage stage; // Referencia al Stage de la ventana de inicio de sesión
+    private Player currentPlayer; // Referencia al jugador actual
+    private static LoginController instance;
+	
+	public LoginController() {
+		
+	}
+	
+	public static LoginController getInstance() {
+        if (instance == null) {
+            instance = new LoginController();
+        }
+        return instance;
+    }
 
     @FXML
     private TextField loginUsername;
@@ -35,11 +50,11 @@ public class LoginController {
     @FXML
     private Button signupButton;
 
-    private Stage stage; // Referencia al Stage de la ventana de inicio de sesión
+    
 
     @FXML
     private void initialize() {
-        // Inicialización de la clase controladora (opcional)
+    	currentPlayer = null;
     }
 
     @FXML
@@ -51,12 +66,13 @@ public class LoginController {
 
         if (userExists) {
             // Usuario válido, continuar con la lógica de tu aplicación
+            currentPlayer = getPlayer(username);
+            System.out.println("Current Player: " + currentPlayer.toString());
             try {
-				MainClass.startGame(new Stage());
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+                MainClass.startGame(new Stage(), currentPlayer);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         } else {
             // Usuario no válido, mostrar mensaje de error o realizar acciones adicionales
             System.out.println("Inicio de sesión fallido");
@@ -89,7 +105,6 @@ public class LoginController {
         }
     }
 
-
     // Método para verificar la existencia del usuario en la base de datos (simulado)
     private boolean checkUserExistence(String username, String password) {
         // Crear una instancia de ConnectionData con la información de conexión
@@ -118,6 +133,35 @@ public class LoginController {
 
         // El usuario no existe en la base de datos
         return false;
+    }
+
+    // Método para obtener el jugador actual
+    public Player getPlayer() {
+        return currentPlayer;
+    }
+
+    // Método para obtener el jugador por nombre de usuario
+    private Player getPlayer(String username) {
+        // Crear una instancia de ConnectionData con la información de conexión
+        ConnectionData connectionData = new ConnectionData(
+                "jdbc:mysql://localhost:3306",
+                "superstevebros",
+                "root",
+                ""
+        );
+
+        // Crear una instancia de Connect y obtener la conexión
+        Connect connect = new Connect(connectionData);
+        try (Connection connection = connect.getConnection()) {
+            // Consulta base de datos
+            PlayerDAO playerDAO = new PlayerDAO(connection);
+            return playerDAO.findByUsername(username);
+        } catch (SQLException e) {
+            System.out.println("Error al conectar con la base de datos");
+            e.printStackTrace();
+        }
+
+        return null;
     }
 
     // Setter para establecer la referencia al Stage de la ventana de inicio de sesión

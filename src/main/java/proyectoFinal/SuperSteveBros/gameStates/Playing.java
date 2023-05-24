@@ -2,6 +2,8 @@ package proyectoFinal.SuperSteveBros.gameStates;
 
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
+import java.sql.SQLException;
+
 import javafx.event.EventHandler;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
@@ -9,12 +11,17 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import proyectoFinal.SuperSteveBros.Game;
+import proyectoFinal.SuperSteveBros.FXMLcontrollers.LoginController;
 import proyectoFinal.SuperSteveBros.Ui.GameOverOverlay;
 import proyectoFinal.SuperSteveBros.Ui.LevelCompletedOverlay;
 import proyectoFinal.SuperSteveBros.Ui.PauseOverlay;
+import proyectoFinal.SuperSteveBros.dao.ScoreDAO;
 import proyectoFinal.SuperSteveBros.entities.EnemyManager;
 import proyectoFinal.SuperSteveBros.entities.Player;
 import proyectoFinal.SuperSteveBros.levels.LevelManager;
+import proyectoFinal.SuperSteveBros.model.Score;
+import proyectoFinal.SuperSteveBros.utils.ConnectionData;
+import proyectoFinal.SuperSteveBros.model.Level;
 import proyectoFinal.SuperSteveBros.utilz.LoadSave;
 import javafx.scene.shape.Rectangle;
 
@@ -36,6 +43,9 @@ public class Playing extends State implements StateMethods{
 	private BufferedImage backgroundImg;
 	private boolean gameOver;
 	private boolean lvlCompleted = false;
+	ScoreDAO scoreDao;
+	ConnectionData connectionData;
+	private proyectoFinal.SuperSteveBros.model.Player currentPlayer;
 	
 	public Playing(Game game) {
 		super(game);
@@ -44,6 +54,8 @@ public class Playing extends State implements StateMethods{
 		game_bg = LoadSave.convertToFxImageView(backgroundImg);
 		calcLvlOffset();
 		loadStartLevel();
+		connectionData = new ConnectionData("jdbc:mysql://localhost:3306", "superstevebros", "root", "");
+		scoreDao = new ScoreDAO(connectionData);
 	}
 	
 	public void loadNextLevel() {
@@ -275,9 +287,34 @@ public class Playing extends State implements StateMethods{
 		return enemyManager;
 		
 	}
+	
+	public boolean isLvlCompleted() {
+        return lvlCompleted;
+    }	
 
 	public void setLevelCompleted(boolean lvlCompleted) {
 		this.lvlCompleted = lvlCompleted;
+		if (lvlCompleted) {
+			player.pausarCuentaAtras();
+            saveScore();
+            player.resetScore();
+        }
+	}
+	
+	private void saveScore() {
+		Level level = new Level(levelManager.getLevelId(), levelManager.getLevelName(), levelManager.getLevelDifficulty(), 60);
+		currentPlayer = game.getPlayer();
+		Score score = new Score(currentPlayer, level, player.getScore());
+		if (currentPlayer == null) {
+			System.out.println("Es null");
+		} else {
+			System.out.println(currentPlayer.toString());
+		}
+		try {
+			scoreDao.save(score);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 
 }

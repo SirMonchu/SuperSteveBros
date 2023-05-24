@@ -35,7 +35,9 @@ public class ScoreDAO implements DAO<Score> {
         );
     }
     
-    public ScoreDAO() {
+    public ScoreDAO(ConnectionData connectionData) {
+    	lD = new LevelDAO(connectionData);
+    	pD = new PlayerDAO(connectionData);
         Connect connect = new Connect(connectionData);  // Crear instancia de Connect
         try {
             this.conn = connect.getConnection();
@@ -88,7 +90,7 @@ public class ScoreDAO implements DAO<Score> {
 	@Override
 	public Score save(Score entity) throws SQLException {
         if (entity != null) {
-        	Score existingScore = findByIds(entity.getPlayer().getId(), entity.getPlayer().getId());
+        	Score existingScore = findByIds(entity.getPlayer().getId(), entity.getLevel().getId());
             if (existingScore == null || (existingScore.getPlayer().getId() == entity.getPlayer().getId() && !(existingScore.getLevel().getId() == entity.getLevel().getId())) || !(existingScore.getPlayer().getId() == entity.getPlayer().getId() && (existingScore.getLevel().getId() == entity.getLevel().getId()))) {
                     // INSERT
                     try (PreparedStatement pst = this.conn.prepareStatement(INSERT)) {
