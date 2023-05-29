@@ -1,5 +1,5 @@
 Manifest-Version: 1.0
-Built-By: ramon
-Build-Jdk: 19.0.2
+Build-Jdk-Spec: 19
+Main-Class: proyectoFinal.SuperSteveBros.MainClass
 Created-By: Maven Integration for Eclipse
 

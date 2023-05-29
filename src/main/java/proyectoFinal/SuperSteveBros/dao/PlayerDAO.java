@@ -18,6 +18,7 @@ public class PlayerDAO implements DAO<Player> {
     private final static String FINDBYUSERNAME = "SELECT * FROM jugadores WHERE username=?";
     private final static String INSERT = "INSERT INTO jugadores (username, password) VALUES (?,?)";
     private final static String UPDATE = "UPDATE jugadores SET username=?, password=? WHERE id=?";
+    private final static String DELETE = "DELETE FROM jugadores WHERE Id = ?";
 
     private Connection conn;
     ConnectionData connectionData;
@@ -130,8 +131,10 @@ public class PlayerDAO implements DAO<Player> {
     }
 
 	@Override
-	public void delete(String entity) throws SQLException {
-		// TODO Auto-generated method stub
-		
+	public void delete(Player entity) throws SQLException {
+		try (PreparedStatement pst = this.conn.prepareStatement(DELETE)) {
+			pst.setInt(1, entity.getId());
+			pst.executeUpdate();
+		}
 	}
 }

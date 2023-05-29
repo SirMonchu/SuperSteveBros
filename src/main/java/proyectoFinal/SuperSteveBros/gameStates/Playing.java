@@ -15,6 +15,7 @@ import proyectoFinal.SuperSteveBros.FXMLcontrollers.LoginController;
 import proyectoFinal.SuperSteveBros.Ui.GameOverOverlay;
 import proyectoFinal.SuperSteveBros.Ui.LevelCompletedOverlay;
 import proyectoFinal.SuperSteveBros.Ui.PauseOverlay;
+import proyectoFinal.SuperSteveBros.Ui.Ranking;
 import proyectoFinal.SuperSteveBros.dao.ScoreDAO;
 import proyectoFinal.SuperSteveBros.entities.EnemyManager;
 import proyectoFinal.SuperSteveBros.entities.Player;
@@ -46,6 +47,8 @@ public class Playing extends State implements StateMethods{
 	ScoreDAO scoreDao;
 	ConnectionData connectionData;
 	private proyectoFinal.SuperSteveBros.model.Player currentPlayer;
+	Ranking ranking;
+	private boolean tabbing;
 	
 	public Playing(Game game) {
 		super(game);
@@ -83,6 +86,7 @@ public class Playing extends State implements StateMethods{
 		pauseOverlay = new PauseOverlay(this);
 		gameOverOverlay = new GameOverOverlay(this);
 		levlCompletedOverlay = new LevelCompletedOverlay(this);
+		ranking = new Ranking();
 	}
 
 	@Override
@@ -150,6 +154,14 @@ public class Playing extends State implements StateMethods{
 			gameOverOverlay.draw(root);
 		} else if (lvlCompleted) {
 			levlCompletedOverlay.draw(root);
+		} else if (tabbing) {
+			try {
+				ranking.draw(root);
+//		        Gamestate.state = Gamestate.MENU;
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 	
@@ -195,6 +207,9 @@ public class Playing extends State implements StateMethods{
 		                	paused = !paused;
 		                	player.pausarCuentaAtras();
 		                	break;
+		                case TAB:
+		                	tabbing = true;
+		                  	break;
 		                }
 					}
 	            }
@@ -222,6 +237,9 @@ public class Playing extends State implements StateMethods{
 	                        break;
 	                    case SPACE:
 	                    	player.setJump(false);
+	                        break;
+	                    case TAB:
+	                    	tabbing = false;
 	                        break;
 	                }
 	            }

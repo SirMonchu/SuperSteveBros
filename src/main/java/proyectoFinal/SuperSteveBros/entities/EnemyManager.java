@@ -57,8 +57,8 @@ public class EnemyManager {
 	            zombieImageView.setFitHeight(ZOMBIE_HEIGHT - 22);
 	            root.getChildren().remove(zombieImageView);
 	            root.getChildren().add(zombieImageView);
-	            z.drawAttackBox(root, xLvlOffset);
-	            z.drawHitbox(root, xLvlOffset);
+//	            z.drawAttackBox(root, xLvlOffset);
+//	            z.drawHitbox(root, xLvlOffset);
 			}
         }
 	}

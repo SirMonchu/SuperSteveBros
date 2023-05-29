@@ -1,6 +1,6 @@
 package proyectoFinal.SuperSteveBros.model;
 
-public class Score {
+public class Score implements Comparable<Score> {
 	
     private Player player;
     private Level level;
@@ -52,6 +52,12 @@ public class Score {
 	 */
 	public void setScore(int score) {
 		this.score = score;
+	}
+
+	@Override
+	public int compareTo(Score o) {
+		// TODO Auto-generated method stub
+		return Integer.compare(this.score, o.getScore());
 	}
     
     

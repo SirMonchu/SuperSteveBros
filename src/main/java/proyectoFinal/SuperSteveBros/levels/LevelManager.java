@@ -1,13 +1,14 @@
 package proyectoFinal.SuperSteveBros.levels;
 
 import java.awt.image.BufferedImage;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.image.Image;
 import proyectoFinal.SuperSteveBros.Game;
-import proyectoFinal.SuperSteveBros.entities.EnemyManager;
+import proyectoFinal.SuperSteveBros.Ui.Ranking;
 import proyectoFinal.SuperSteveBros.gameStates.Gamestate;
 import proyectoFinal.SuperSteveBros.utilz.LoadSave;
 
@@ -19,12 +20,15 @@ public class LevelManager {
 	private ArrayList<Level> levels;
 	private int lvlIndex = 0;
 	private ImageView imageView;
+	Ranking ranking;
+	private boolean last = true;
 	
 	public LevelManager(Game game) {
 		this.game = game;
 		importOutsideSprites();
 		levels = new ArrayList<>();
 		buildAllLevels();
+		ranking = new Ranking();
 	}
 	
 	private void buildAllLevels() {
@@ -36,17 +40,17 @@ public class LevelManager {
 	
 
 	public void loadNextLevel() {
-		lvlIndex ++;
-		if (lvlIndex >= levels.size()) {
-			lvlIndex = 0;
-			System.out.println("HAS TERMIANDO");
-			Gamestate.state = Gamestate.MENU;
-		}
-		Level newLevel = levels.get(lvlIndex);
-		game.getPlaying().getEnemyManager().loadEnemies(newLevel);
-		game.getPlaying().getPlayer().loadLvlData(newLevel.getLvlData());
-		game.getPlaying().setMaxLvlOffset(newLevel.getLvlOffset());
+	    lvlIndex++;
+	    if (lvlIndex >= levels.size()) {
+	        lvlIndex = 0;
+	        Gamestate.state = Gamestate.MENU;
+	    }
+	    Level newLevel = levels.get(lvlIndex);
+	    game.getPlaying().getEnemyManager().loadEnemies(newLevel);
+	    game.getPlaying().getPlayer().loadLvlData(newLevel.getLvlData());
+	    game.getPlaying().setMaxLvlOffset(newLevel.getLvlOffset());
 	}
+
 
 	private void importOutsideSprites() {
 	    BufferedImage img = LoadSave.GetSpriteAtlas(LoadSave.LEVEL_ATLAS);

@@ -67,6 +67,9 @@ public class MouseInputs {
 				case PLAYING:
 					gamePanel.getGame().getPlaying().mousePressed(event);
 					break;
+				case OPTIONS:
+					gamePanel.getGame().getOptions().mousePressed(event);
+					break;
 				default:
 					break;
 				}
@@ -82,6 +85,9 @@ public class MouseInputs {
 					break;
 				case PLAYING:
 					gamePanel.getGame().getPlaying().mouseReleased(event);
+					break;
+				case OPTIONS:
+					gamePanel.getGame().getOptions().mouseReleased(event);
 					break;
 				default:
 					break;
@@ -121,6 +127,9 @@ public class MouseInputs {
 					break;
 				case PLAYING:
 					gamePanel.getGame().getPlaying().mouseMoved(event);
+					break;
+				case OPTIONS:
+					gamePanel.getGame().getOptions().mouseMoved(event);
 					break;
 				default:
 					break;

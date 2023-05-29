@@ -32,6 +32,9 @@ public class LoadSave {
 	public static final String PLAYER_BAR = "health_power_bar.png";
 	public static final String GAME_OVER = "game-over.jpg";
 	public static final String LEVEL_COMPLETED = "completed_sprite.png";
+	public static final String OPTIONS_BACKGROUND = "options_background.png";
+	public static final String DELETE_ACCOUNT = "delete_account.png";
+	public static final String RANKING_BACKGROUND = "rancking_backgroung.png";
 	
 	public static BufferedImage GetSpriteAtlas(String fileName) {
 		BufferedImage img = null;

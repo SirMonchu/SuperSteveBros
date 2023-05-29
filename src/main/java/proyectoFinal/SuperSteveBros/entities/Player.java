@@ -162,7 +162,7 @@ public class Player extends Entity {
 		    root.getChildren().remove(imageView);
 		    root.getChildren().add(imageView);
 //		    drawHitbox(root, lvlOffset);
-		    drawAttackBox(root, lvlOffset);
+//		    drawAttackBox(root, lvlOffset);
 		    drawUI(root);
 	}
 	
@@ -394,6 +394,7 @@ public class Player extends Entity {
         public void reiniciarCuentaAtras(int duracionSegundos) {
             pausarCuentaAtras();
             segundos = duracionSegundos;
+            score = 60;
             iniciarCuentaAtras(segundos);
             System.out.println("Cuenta atrás reiniciada a " + duracionSegundos + " segundos.");
         }

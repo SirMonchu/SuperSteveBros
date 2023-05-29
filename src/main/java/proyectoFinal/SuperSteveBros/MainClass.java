@@ -1,6 +1,7 @@
 package proyectoFinal.SuperSteveBros;
 
 import java.io.IOException;
+import java.net.URL;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -22,12 +23,14 @@ public class MainClass extends Application {
     }
 
     static void setLoginScene() throws IOException {
-        Parent root = loadFXML("Login");	
+        Parent root = loadFXML("Login");
         loginScene = new Scene(root);
     }
 
     private static Parent loadFXML(String fxml) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(MainClass.class.getResource(fxml + ".fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader();
+        String fullPath = MainClass.class.getResource("/proyectoFinal/SuperSteveBros/" + fxml + ".fxml").toExternalForm();
+        fxmlLoader.setLocation(new URL(fullPath));
         return fxmlLoader.load();
     }
 
@@ -37,7 +40,7 @@ public class MainClass extends Application {
 
     // Método para realizar la transición al juego después del inicio de sesión
     public static void startGame(Stage stage, Player player) throws IOException {
-        Game game = new Game(player);
+        Game game = new Game(player, stage);
         stage.setScene(game.getGamePanel().getScene());
         stage.setResizable(false);
         stage.show();

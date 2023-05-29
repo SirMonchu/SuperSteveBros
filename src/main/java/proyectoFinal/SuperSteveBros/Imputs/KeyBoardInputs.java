@@ -27,6 +27,9 @@ public class KeyBoardInputs {
 				case PLAYING:
 					gamePanel.getGame().getPlaying().keyPressed(event);
 					break;
+				case OPTIONS:
+					gamePanel.getGame().getOptions().keyPressed(event);
+					break;
 				default:
 					break;
 				}

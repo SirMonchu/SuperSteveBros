@@ -83,7 +83,7 @@ public class LevelDAO implements DAO<Level> {
 	}
 
 	@Override
-	public void delete(String entity) throws SQLException {
+	public void delete(Level entity) throws SQLException {
 		// TODO Auto-generated method stub
 		
 	}

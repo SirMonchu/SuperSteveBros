@@ -113,7 +113,7 @@ public class ScoreDAO implements DAO<Score> {
 	}
 
 	@Override
-	public void delete(String entity) throws SQLException {
+	public void delete(Score entity) throws SQLException {
 		// TODO Auto-generated method stub
 		
 	}
